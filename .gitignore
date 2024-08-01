@@ -1,0 +1,15 @@
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+
+# Ignore package metadata
+*.egg-info/
+machine_learning.egg-info/
+
+# Ignore virtual environments
+venv/
+.env/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
