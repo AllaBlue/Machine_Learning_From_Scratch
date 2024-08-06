@@ -31,7 +31,7 @@ class LinearRegression():
             X_train (numpy.ndarray): The training data features.
             y_train (numpy.ndarray): The training data target values.
         """
-        X = np.hstack((np.ones(X_train.shape), X_train))
+        X = np.hstack((np.ones((X_train.shape[0], 1)), X_train))
         self.weights = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, y_train))
         
         self.intercept_ = self.weights[0]
@@ -52,6 +52,6 @@ class LinearRegression():
         Returns:
             numpy.ndarray: The predicted target values.
         """
-        X = np.hstack((np.ones(X_test.shape), X_test))
+        X = np.hstack((np.ones((X_test.shape[0], 1)), X_test))
         y_pred = np.dot(X, self.weights)
         return y_pred
