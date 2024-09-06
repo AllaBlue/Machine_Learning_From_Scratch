@@ -9,38 +9,20 @@ class PolynomialFeatures():
     For example, if an input sample is two-dimensional and of the form [a, b], 
     the degree-2 polynomial features are [1, a, b, a^2, ab, b^2].
 
-    Parameters
-    ----------
-    degree : int
-        The degree of polynomial features to generate.
+    Args:
+        degree (int): The degree of polynomial features to generate.
 
-    Attributes
-    ----------
-    degree : int
-        The degree of polynomial features to generate.
-    combinations : list
-        A list to store generated combinations of feature indices.
-
-    Methods
-    -------
-    fit(X)
-        Generates polynomial feature combinations for the input array X.
-    transform(X)
-        Transforms the input array X by generating the polynomial features based on the combinations.
-    fit_transform(X)
-        Combines the fit and transform methods: generates polynomial features and returns the transformed array.
-    combinations_with_replacement_(iterable, r)
-        Helper function that generates combinations with replacement of the input iterable.
+    Attributes:
+        degree (int): The degree of polynomial features to generate.
+        combinations (list): A list to store generated combinations of feature indices.
     """
     
     def __init__(self, degree):
         """
         Initializes the PolynomialFeatures class with a specified degree.
 
-        Parameters
-        ----------
-        degree : int
-            The degree of polynomial features to generate.
+        Args:
+            degree (int): The degree of polynomial features to generate.
         """
 
         self.degree = degree
@@ -51,15 +33,12 @@ class PolynomialFeatures():
         """
         Generates combinations of feature indices for the input array X.
 
-        Parameters
-        ----------
-        X : numpy array of shape (n_samples, n_features)
-            The input data array where n_samples is the number of samples and 
-            n_features is the number of features.
+        Args:
+            X (np.ndarray): The input data array of shape (n_samples, n_features), where 
+                            n_samples is the number of samples and n_features is the number of features.
 
-        Returns
-        -------
-        None
+        Returns:
+            None
         """
 
         _, n_features = X.shape
@@ -72,18 +51,14 @@ class PolynomialFeatures():
 
     def transform(self, X):
         """
-        Transforms the input array X by generating polynomial features 
-        based on the combinations generated in the fit method.
+        Transforms the input array X by generating polynomial features based on the combinations 
+        generated in the fit method.
 
-        Parameters
-        ----------
-        X : numpy array of shape (n_samples, n_features)
-            The input data array to be transformed.
+        Args:
+            X (np.ndarray): The input data array of shape (n_samples, n_features) to be transformed.
 
-        Returns
-        -------
-        numpy array of shape (n_samples, n_polynomial_features)
-            The transformed array including the polynomial features.
+        Returns:
+            np.ndarray: The transformed array of shape (n_samples, n_polynomial_features), including the polynomial features.
         """
 
         transformed_features = []
@@ -99,15 +74,11 @@ class PolynomialFeatures():
         Combines the fit and transform methods to generate polynomial features 
         and return the transformed array.
 
-        Parameters
-        ----------
-        X : numpy array of shape (n_samples, n_features)
-            The input data array to be fitted and transformed.
+        Args:
+            X (np.ndarray): The input data array of shape (n_samples, n_features) to be fitted and transformed.
 
-        Returns
-        -------
-        numpy array of shape (n_samples, n_polynomial_features)
-            The transformed array including the polynomial features.
+        Returns:
+            np.ndarray: The transformed array of shape (n_samples, n_polynomial_features), including the polynomial features.
         """
         
         self.fit(X)
@@ -118,17 +89,12 @@ class PolynomialFeatures():
         Helper function that generates combinations with replacement 
         of the input iterable.
 
-        Parameters
-        ----------
-        iterable : iterable
-            The input iterable from which to generate combinations.
-        r : int
-            The number of elements in each combination.
+        Args:
+            iterable (iterable): The input iterable from which to generate combinations.
+            r (int): The number of elements in each combination.
 
-        Yields
-        ------
-        tuple
-            A tuple representing a combination with replacement.
+        Yields:
+            tuple: A tuple representing a combination with replacement.
         """
 
         pool = tuple(iterable)
