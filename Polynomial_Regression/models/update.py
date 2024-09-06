@@ -9,16 +9,29 @@ import numpy as np
 
 class ModelsUpdate():
     """
-    ModelsUpdate is a class that compares custom and sklearn implementations of 
-    polynomial regression models. It standardizes the data, fits models for 
-    multiple polynomial degrees, evaluates them using different metrics, and 
-    stores the results for comparison.
+    A class to compare custom and sklearn polynomial regression models by evaluating them 
+    on standardized data across multiple polynomial degrees and storing the results.
+
+    Attributes:
+        maes_custom (list): Mean absolute errors for custom models.
+        mses_custom (list): Mean squared errors for custom models.
+        rmses_custom (list): Root mean squared errors for custom models.
+        r2_custom (list): R^2 scores for custom models.
+        preds_custom (list): Predictions from custom models.
+
+        maes_sklearn (list): Mean absolute errors for sklearn models.
+        mses_sklearn (list): Mean squared errors for sklearn models.
+        rmses_sklearn (list): Root mean squared errors for sklearn models.
+        r2_sklearn (list): R^2 scores for sklearn models.
+        preds_sklearn (list): Predictions from sklearn models.
+
+        models (list): Information about custom and sklearn models, including evaluation metrics.
     """
 
     def __init__(self):
         """
-        Initializes the ModelsUpdate class with empty lists for storing 
-        evaluation metrics and predictions for both custom and sklearn models.
+        Initializes the ModelsUpdate class with empty lists for storing evaluation metrics 
+        and predictions for both custom and sklearn models.
         """
 
         # Custom model metrics
@@ -43,12 +56,13 @@ class ModelsUpdate():
         """
         Standardizes the training and testing data using both custom and sklearn scalers.
 
-        Parameters:
-        X_train (array-like): Training data features.
-        X_test (array-like): Testing data features.
+        Args:
+            X_train (np.ndarray): Training data features of shape (n_samples, n_features).
+            X_test (np.ndarray): Testing data features of shape (n_samples, n_features).
 
         Returns:
-        tuple: Standardized training and testing data for both custom and sklearn scalers.
+            tuple: Standardized training and testing data for both custom and sklearn scalers, 
+                   in the order (X_train_custom, X_test_custom, X_train_sklearn, X_test_sklearn).
         """
 
         # Custom standardization
@@ -68,13 +82,15 @@ class ModelsUpdate():
         Computes and stores regression metrics (MAE, MSE, RMSE, R^2) for polynomial 
         regression models of various degrees using both custom and sklearn implementations.
 
-        Parameters:
-        X_train (array-like): Training data features.
-        X_test (array-like): Testing data features.
-        y_train (array-like): Training data target values.
-        y_test (array-like): Testing data target values.
-        degrees (int): Maximum degree of the polynomial features to be considered. 
-                       Default is 11.
+        Args:
+            X_train (np.ndarray): Training data features of shape (n_samples, n_features).
+            X_test (np.ndarray): Testing data features of shape (n_samples, n_features).
+            y_train (np.ndarray): Training data target values of shape (n_samples,).
+            y_test (np.ndarray): Testing data target values of shape (n_samples,).
+            degrees (int): Maximum degree of the polynomial features to be considered. Default is 11.
+
+        Returns:
+            None
         """
 
         # Standardize the data
@@ -134,8 +150,11 @@ class ModelsUpdate():
     
     def update_models(self):
         """
-        Updates the models attribute with information about the custom and 
-        sklearn models, including metrics for each model.
+        Updates the `models` attribute with information about the custom and sklearn models, 
+        including metrics for each model.
+
+        Returns:
+            None
         """
 
         self.models = [
