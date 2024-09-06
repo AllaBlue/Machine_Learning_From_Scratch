@@ -11,9 +11,7 @@ class GradienDescent():
         Gradient = (-2/n) * sum(X(y - XW))
 
     Attributes:
-    ----------
-    weights : ndarray
-        The weights of the linear regression model, initialized as None.
+        weights (np.ndarray): The weights of the linear regression model, initialized as None.
     """
 
     def __init__(self):
@@ -27,19 +25,13 @@ class GradienDescent():
         """
         Calculates the gradient of the loss function with respect to the weights.
 
-        Parameters:
-        ----------
-        X_train : ndarray
-            The input features for training, with shape (n_samples, n_features).
-        y_train : ndarray
-            The target values for training, with shape (n_samples,).
-        weights : ndarray
-            The current weights of the model, with shape (n_features + 1,).
+        Args:
+            X_train (np.ndarray): The input features for training, with shape (n_samples, n_features).
+            y_train (np.ndarray): The target values for training, with shape (n_samples,).
+            weights (np.ndarray): The current weights of the model, with shape (n_features + 1,).
 
         Returns:
-        -------
-        gradient : ndarray
-            The computed gradient, with shape (n_features + 1,).
+            np.ndarray: The computed gradient, with shape (n_features + 1,).
         """
 
         n_samples, _ = X_train.shape
@@ -57,20 +49,14 @@ class GradienDescent():
         """
         Fits the linear regression model using gradient descent.
 
-        Parameters:
-        ----------
-        X_train : ndarray
-            The input features for training, with shape (n_samples, n_features).
-        y_train : ndarray
-            The target values for training, with shape (n_samples,).
-        learning_rate : float
-            The step size for gradient descent updates.
-        iterations : int
-            The number of iterations to perform gradient descent.
+        Args:
+            X_train (np.ndarray): The input features for training, with shape (n_samples, n_features).
+            y_train (np.ndarray): The target values for training, with shape (n_samples,).
+            learning_rate (float): The step size for gradient descent updates.
+            iterations (int): The number of iterations to perform gradient descent.
 
         Returns:
-        -------
-        None
+            None
         """
 
         n_samples, n_features = X_train.shape
@@ -89,15 +75,11 @@ class GradienDescent():
         """
         Predicts the target values for the given test data.
 
-        Parameters:
-        ----------
-        X_test : ndarray
-            The input features for testing, with shape (n_samples, n_features).
+        Args:
+            X_test (np.ndarray): The input features for testing, with shape (n_samples, n_features).
 
         Returns:
-        -------
-        y_pred : ndarray
-            The predicted target values, with shape (n_samples,).
+            np.ndarray: The predicted target values, with shape (n_samples,).
         """
         
         n_samples, _ = X_test.shape
