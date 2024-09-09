@@ -14,14 +14,14 @@ class GradienDescent():
         weights (np.ndarray): The weights of the linear regression model, initialized as None.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the GradientDescent class.
         """
 
         self.weights = None
 
-    def get_gradient(self, X_train, y_train, weights):
+    def get_gradient(self, X_train: np.ndarray, y_train: np.ndarray, weights: np.ndarray) -> np.ndarray:
         """
         Calculates the gradient of the loss function with respect to the weights.
 
@@ -45,7 +45,7 @@ class GradienDescent():
 
         return gradient
     
-    def fit(self, X_train, y_train, learning_rate, iterations):
+    def fit(self, X_train: np.ndarray, y_train: np.ndarray, learning_rate: float, iterations: int) -> 'GradienDescent':
         """
         Fits the linear regression model using gradient descent.
 
@@ -67,11 +67,13 @@ class GradienDescent():
             self.weights = [0] * (n_features + 1)
 
         # Perform gradient descent for a specified number of iterations
-        for iteration in range(iterations):
+        for _ in range(iterations):
             gradient = self.get_gradient(X_train=X, y_train=y_train, weights=self.weights)
             self.weights = self.weights - learning_rate * gradient
+        
+        return self
     
-    def predict(self, X_test):
+    def predict(self, X_test: np.ndarray) -> np.ndarray:
         """
         Predicts the target values for the given test data.
 
