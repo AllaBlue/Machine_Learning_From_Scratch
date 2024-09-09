@@ -17,19 +17,18 @@ class PolynomialFeatures():
         combinations (list): A list to store generated combinations of feature indices.
     """
     
-    def __init__(self, degree):
+    def __init__(self, degree: int) -> None:
         """
         Initializes the PolynomialFeatures class with a specified degree.
 
         Args:
             degree (int): The degree of polynomial features to generate.
         """
-
         self.degree = degree
         self.combinations = []
 
 
-    def fit(self, X):
+    def fit(self, X: np.ndarray) -> 'PolynomialFeatures':
         """
         Generates combinations of feature indices for the input array X.
 
@@ -40,16 +39,17 @@ class PolynomialFeatures():
         Returns:
             None
         """
-
         _, n_features = X.shape
 
         # Generate combinations of features for each degree
         for d in range(1, self.degree + 1):
             for combination in self.combinations_with_replacement_(range(n_features), d):
                 self.combinations.append(combination)
+        
+        return self
     
 
-    def transform(self, X):
+    def transform(self, X: np.ndarray) -> np.ndarray:
         """
         Transforms the input array X by generating polynomial features based on the combinations 
         generated in the fit method.
@@ -60,7 +60,6 @@ class PolynomialFeatures():
         Returns:
             np.ndarray: The transformed array of shape (n_samples, n_polynomial_features), including the polynomial features.
         """
-
         transformed_features = []
 
         for combination in self.combinations:
@@ -69,7 +68,7 @@ class PolynomialFeatures():
         
         return np.column_stack(transformed_features)
     
-    def fit_transform(self, X):
+    def fit_transform(self, X: np.ndarray) -> np.ndarray:
         """
         Combines the fit and transform methods to generate polynomial features 
         and return the transformed array.
@@ -80,11 +79,10 @@ class PolynomialFeatures():
         Returns:
             np.ndarray: The transformed array of shape (n_samples, n_polynomial_features), including the polynomial features.
         """
-        
         self.fit(X)
         return self.transform(X)
     
-    def combinations_with_replacement_(self, iterable, r):
+    def combinations_with_replacement_(self, iterable, r: int):
         """
         Helper function that generates combinations with replacement 
         of the input iterable.
