@@ -29,7 +29,7 @@ class StandardScaler():
             X (numpy.ndarray): The input data to fit the scaler on, with shape (n_samples, n_features).
         
         Returns:
-            None
+            StandardScaler: Returns self
         """
         self.mean_ = []
         self.std_ = []
