@@ -5,66 +5,48 @@ from sklearn.linear_model import Lasso, LinearRegression
 class LassoCoordinate():
     """
     A class that implements Lasso regression using the Coordinate Descent algorithm.
-    
-    Parameters
-    ----------
-    alpha : float, optional (default=1)
-        Regularization strength. Must be a positive float. Regularization improves
-        the conditioning of the problem and reduces the variance of the estimates.
-        Larger values specify stronger regularization.
-    
-    Attributes
-    ----------
-    coef_ : ndarray of shape (n_features,)
-        The coefficients of the features in the decision function.
-    
-    intercept_ : float
-        The independent term in the decision function.
+
+    Args:
+        alpha (float): Regularization strength. Must be a positive float. Regularization improves
+            the conditioning of the problem and reduces the variance of the estimates. Larger values 
+            specify stronger regularization. Default is 1.
+
+    Attributes:
+        coef_ (numpy.ndarray): Coefficients of the features in the decision function, shape (n_features,).
+        intercept_ (float): The independent term in the decision function.
+        sc (StandardScaler): Scaler to standardize the input features.
     """
 
-    def __init__(self, alpha=1):
+    def __init__(self, alpha: float = 1) -> None:
         """
         Initialize the LassoCoordinate class with the given alpha value.
         
-        Parameters
-        ----------
-        alpha : float, optional (default=1)
-            Regularization strength.
+        Args:
+            alpha (float): Regularization strength.
         """
-        
         self.alpha = alpha
         # Lasso Coordinate Descent will NOT work if data is not standardized
         self.sc = StandardScaler()
 
 
-    def fit(self, X_train, y_train, iterations):
+    def fit(self, X_train: np.ndarray, y_train: np.ndarray, iterations: int) -> 'LassoCoordinate':
         """
-        Fit the Lasso regression model using the training data and coordinate descent.
+        Fits the Lasso regression model using the training data and coordinate descent.
 
-        Algorithm:
-        1. calculate residuals
-        residulas should incluse all terms(weights * features) EXCEPT current term
-        2. calculate gradient for current weight only (dont include intercept)
-        3. current weight =  softthreshold operator with gradient and alpha
-        4. update intercept with mean of residuals (because it centers residuals around 0)
+        The algorithm proceeds as follows:
+        1. Calculate residuals, which include all terms (weights * features) EXCEPT the current term.
+        2. Calculate the gradient for the current weight only (excluding the intercept).
+        3. Update the current weight using the soft-thresholding operator with the gradient and alpha.
+        4. Update the intercept with the mean of the residuals, which centers the residuals around 0.
         
-        Parameters
-        ----------
-        X_train : ndarray of shape (n_samples, n_features)
-            Training data.
+        Args:
+            X_train (np.ndarray): Training data of shape (n_samples, n_features).
+            y_train (np.ndarray): Target values of shape (n_samples,).
+            iterations (int): Number of iterations for the coordinate descent algorithm.
         
-        y_train : ndarray of shape (n_samples,)
-            Target values.
-        
-        iterations : int
-            Number of iterations for the coordinate descent algorithm.
-        
-        Returns
-        -------
-        self : object
-            Returns self.
+        Returns:
+            LassoCoordinate: Returns self.
         """
-
         # Standardize the training data
         X_train = self.sc.fit_transform(X_train)
         _, n_features = X_train.shape
@@ -77,23 +59,20 @@ class LassoCoordinate():
         for _ in range(iterations):
             self.update_current_weight(X_train=X_train, y_train=y_train)
             self.update_bias(X_train=X_train, y_train=y_train)
+        
+        return self
 
     
-    def predict(self, X_test):
+    def predict(self, X_test: np.ndarray) -> np.ndarray:
         """
         Predict target values using the Lasso regression model.
-        
-        Parameters
-        ----------
-        X_test : ndarray of shape (n_samples, n_features)
-            Test data.
-        
-        Returns
-        -------
-        y_pred : ndarray of shape (n_samples,)
-            Predicted target values.
-        """
 
+        Args:
+            X_test (numpy.ndarray): Test data of shape (n_samples, n_features).
+
+        Returns:
+            numpy.ndarray: Predicted target values of shape (n_samples,).
+        """
         # Standardize the test data
         X_test = self.sc.transform(X_test)
 
@@ -103,19 +82,14 @@ class LassoCoordinate():
         return y_pred
 
 
-    def update_current_weight(self, X_train, y_train):
+    def update_current_weight(self, X_train: np.ndarray, y_train: np.ndarray) -> None:
         """
         Update the weight for each feature using the coordinate descent algorithm.
-        
-        Parameters
-        ----------
-        X_train : ndarray of shape (n_samples, n_features)
-            Training data.
-        
-        y_train : ndarray of shape (n_samples,)
-            Target values.
-        """
 
+        Args:
+            X_train (numpy.ndarray): Training data of shape (n_samples, n_features).
+            y_train (numpy.ndarray): Target values of shape (n_samples,).
+        """
         n_samples, n_features = X_train.shape
         
         for feature in range(n_features):
@@ -139,47 +113,29 @@ class LassoCoordinate():
             self.coef_[feature] = current_weight
 
 
-    def update_bias(self, X_train, y_train):
+    def update_bias(self, X_train: np.ndarray, y_train: np.ndarray) -> None:
         """
         Update the bias (intercept) term using the mean of the residuals.
-        
-        Parameters
-        ----------
-        X_train : ndarray of shape (n_samples, n_features)
-            Training data.
-        
-        y_train : ndarray of shape (n_samples,)
-            Target values.
-        """
 
+        Args:
+            X_train (numpy.ndarray): Training data of shape (n_samples, n_features).
+            y_train (numpy.ndarray): Target values of shape (n_samples,).
+        """
         # Update the intercept by centering the residuals around zero
         self.intercept_ = np.mean(y_train - np.dot(X_train, self.coef_))
 
 
-    def soft_thresholding_operator(self, z, pho):
+    def soft_thresholding_operator(self, z: float, pho: float) -> float:
         """
         Apply the soft thresholding operator to the given value.
-        
-        Parameters
-        ----------
-        z : float
-            The value to apply the soft thresholding operator to.
-        
-        pho : float
-            The regularization parameter (alpha).
-        
-        Returns
-        -------
-        float
-            The result of the soft thresholding operation.
-        
-        S(z, alpha) = {
-                        z - alpha,  if z > alpha
-                        0,          if |z| <= alpha
-                        z + alpha,  if z < -alpha
-                    }
-        """
 
+        Args:
+            z (float): The value to apply the soft thresholding operator to.
+            pho (float): The regularization parameter (alpha).
+
+        Returns:
+            float: The result of the soft thresholding operation.
+        """
         if z > pho:
             return z - pho
         elif np.abs(z) <= pho:
@@ -192,67 +148,43 @@ class LassoGradient():
     """
     A class that implements Lasso regression using Gradient Descent.
 
-    gradient(weights) = -2/n sum(X*(y-XW-b))
-    gradient(bias) = -2/n sum(y-xw-b)
-    
-    Parameters
-    ----------
-    alpha : float, optional (default=1)
-        Regularization strength. Must be a positive float. Regularization improves
-        the conditioning of the problem and reduces the variance of the estimates.
-        Larger values specify stronger regularization.
-    
-    learning_rate : float, optional (default=0.01)
-        The step size for each iteration in the gradient descent algorithm.
-    
-    Attributes
-    ----------
-    coef_ : ndarray of shape (n_features,)
-        The coefficients of the features in the decision function.
-    
-    intercept_ : float
-        The independent term in the decision function.
+    Args:
+        alpha (float): Regularization strength. Must be a positive float. Regularization improves
+            the conditioning of the problem and reduces the variance of the estimates. Larger values 
+            specify stronger regularization. Default is 1.
+        learning_rate (float): Step size for each iteration in the gradient descent algorithm. Default is 0.01.
+
+    Attributes:
+        coef_ (numpy.ndarray): Coefficients of the features in the decision function, shape (n_features,).
+        intercept_ (float): The independent term in the decision function.
+        sc (StandardScaler): Scaler to standardize the input features.
     """
 
-    def __init__(self, alpha=1, learning_rate=0.01):
+    def __init__(self, alpha: float = 1, learning_rate: float = 0.01) -> None:
         """
         Initialize the LassoGradient class with the given alpha and learning_rate.
-        
-        Parameters
-        ----------
-        alpha : float, optional (default=1)
-            Regularization strength.
-        
-        learning_rate : float, optional (default=0.01)
-            The step size for each iteration in the gradient descent algorithm.
-        """
 
+        Args:
+            alpha (float): Regularization strength.
+            learning_rate (float): The step size for each iteration in the gradient descent algorithm.
+        """
         self.alpha = alpha
         self.learning_rate = learning_rate
         self.sc = StandardScaler()
 
 
-    def fit(self, X_train, y_train, iterations):
+    def fit(self, X_train: np.ndarray, y_train: np.ndarray, iterations: int) -> 'LassoGradient':
         """
         Fit the Lasso regression model using the training data and gradient descent.
-        
-        Parameters
-        ----------
-        X_train : ndarray of shape (n_samples, n_features)
-            Training data.
-        
-        y_train : ndarray of shape (n_samples,)
-            Target values.
-        
-        iterations : int
-            Number of iterations for the gradient descent algorithm.
-        
-        Returns
-        -------
-        self : object
-            Returns self.
-        """
 
+        Args:
+            X_train (numpy.ndarray): Training data of shape (n_samples, n_features).
+            y_train (numpy.ndarray): Target values of shape (n_samples,).
+            iterations (int): Number of iterations for the gradient descent algorithm.
+
+        Returns:
+            LassoGradient: Returns self.
+        """
         _, n_features = X_train.shape
 
         # Standardize the training data
@@ -270,23 +202,20 @@ class LassoGradient():
             # Update the coefficients and intercept using the gradients
             self.coef_ = self.coef_ - self.learning_rate * gradient_weights
             self.intercept_ = self.intercept_ - self.learning_rate * gradient_bias
+        
+        return self
 
 
-    def predict(self, X_test):
+    def predict(self, X_test: np.ndarray) -> np.ndarray:
         """
         Predict target values using the Lasso regression model.
-        
-        Parameters
-        ----------
-        X_test : ndarray of shape (n_samples, n_features)
-            Test data.
-        
-        Returns
-        -------
-        y_pred : ndarray of shape (n_samples,)
-            Predicted target values.
-        """
 
+        Args:
+            X_test (numpy.ndarray): Test data of shape (n_samples, n_features).
+
+        Returns:
+            numpy.ndarray: Predicted target values of shape (n_samples,).
+        """
         # Standardize the test data
         X_test = self.sc.transform(X_test)
         # Compute the predicted values using the learned weights and intercept
@@ -294,24 +223,17 @@ class LassoGradient():
         return y_pred
 
 
-    def get_gradient_weights(self, X_train, y_train):
+    def get_gradient_weights(self, X_train: np.ndarray, y_train: np.ndarray) -> np.ndarray:
         """
         Compute the gradient for the weights using the training data.
-        
-        Parameters
-        ----------
-        X_train : ndarray of shape (n_samples, n_features)
-            Training data.
-        
-        y_train : ndarray of shape (n_samples,)
-            Target values.
-        
-        Returns
-        -------
-        gradient_weights : ndarray of shape (n_features,)
-            The gradient of the weights.
-        """
 
+        Args:
+            X_train (numpy.ndarray): Training data of shape (n_samples, n_features).
+            y_train (numpy.ndarray): Target values of shape (n_samples,).
+
+        Returns:
+            numpy.ndarray: The gradient of the weights, shape (n_features,).
+        """
         n_samples, _ = X_train.shape
 
         # Calculate the residuals
@@ -326,24 +248,17 @@ class LassoGradient():
         return gradient_weights
     
 
-    def get_gradient_bias(self, X_train, y_train):
+    def get_gradient_bias(self, X_train: np.ndarray, y_train: np.ndarray) -> float:
         """
         Compute the gradient for the bias (intercept) using the training data.
-        
-        Parameters
-        ----------
-        X_train : ndarray of shape (n_samples, n_features)
-            Training data.
-        
-        y_train : ndarray of shape (n_samples,)
-            Target values.
-        
-        Returns
-        -------
-        gradient_bias : float
-            The gradient of the bias.
-        """
 
+        Args:
+            X_train (numpy.ndarray): Training data of shape (n_samples, n_features).
+            y_train (numpy.ndarray): Target values of shape (n_samples,).
+
+        Returns:
+            float: The gradient of the bias.
+        """
         n_samples, _ = X_train.shape
 
         # Calculate the residuals
