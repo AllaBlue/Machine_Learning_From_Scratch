@@ -32,7 +32,7 @@ class LinearRegression():
             y_train (numpy.ndarray): The training data target values with shape (n_samples,).
         
         Returns:
-            None
+            LinearRegression: Returns self
         """
         X = np.hstack((np.ones((X_train.shape[0], 1)), X_train))
         self.weights = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, y_train))
