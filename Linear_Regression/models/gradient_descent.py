@@ -56,7 +56,7 @@ class GradienDescent():
             iterations (int): The number of iterations to perform gradient descent.
 
         Returns:
-            None
+            GradienDescent: Returns self
         """
 
         n_samples, n_features = X_train.shape
