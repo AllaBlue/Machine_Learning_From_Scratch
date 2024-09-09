@@ -15,7 +15,7 @@ class RegressionMetrics():
     """
 
     @staticmethod
-    def MSE(y_true, y_pred):
+    def MSE(y_true: np.ndarray, y_pred: np.ndarray) -> float:
         """
         Calculate Mean Square Error (MSE).
 
@@ -33,7 +33,7 @@ class RegressionMetrics():
     
 
     @staticmethod
-    def RMSE(y_true, y_pred):
+    def MSE(y_true: np.ndarray, y_pred: np.ndarray) -> float:
         """
         Calculate Root Mean Square Error (RMSE).
 
@@ -51,7 +51,7 @@ class RegressionMetrics():
     
 
     @staticmethod
-    def MAE(y_true, y_pred):
+    def MAE(y_true: np.ndarray, y_pred: np.ndarray) -> float:
         """
         Calculate Mean Absolute Error (MAE).
 
@@ -70,7 +70,7 @@ class RegressionMetrics():
     
 
     @staticmethod
-    def R2(y_true, y_pred):
+    def R2(y_true: np.ndarray, y_pred: np.ndarray) -> float:
         """
         Calculate the R2 score (Coefficient of Determination).
 
@@ -88,7 +88,7 @@ class RegressionMetrics():
     
 
     @staticmethod
-    def print_metrics(y_true, y_pred):
+    def print_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> None:
         """
         Print all regression metrics: MSE, RMSE, MAE, and R2 score.
 
@@ -106,7 +106,7 @@ class RegressionMetrics():
     
 
     @staticmethod
-    def metrics_dataframe(y_true, y_pred):
+    def metrics_dataframe(y_true: np.ndarray, y_pred: np.ndarray) -> pd.DataFrame:
         """
         Return all regression metrics as a pandas DataFrame.
 
