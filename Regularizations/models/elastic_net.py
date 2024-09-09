@@ -38,7 +38,7 @@ class ElasticNetCoordinate():
             iterations (int): Number of iterations for the coordinate descent algorithm.
 
         Returns:
-            None
+            ElasticNetCoordinate: Returns self
         """
         _, n_features = X_train.shape
         
@@ -176,7 +176,7 @@ class ElasticNetGradient():
             iterations (int): Number of iterations for gradient descent.
 
         Returns:
-            None
+            ElasticNetGradient: Returns self
         """
         X_train = self.sc.fit_transform(X_train)
 
