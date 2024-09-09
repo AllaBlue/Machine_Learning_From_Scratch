@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib import style
 import numpy as np
+import pandas as pd
+from pandas.api.types import is_numeric_dtype
 
 # Apply dark background style for plots
 style.use("dark_background")
@@ -12,14 +14,16 @@ class Plot():
     """
 
     @staticmethod
-    def set_plot_params(figsize):
+    def set_plot_params(figsize: tuple = (16, 8)) -> None:
         """
         Set global plot parameters for customizing the appearance of plots.
         
         Args:
-            figsize (tuple): A tuple specifying the figure size (width, height).
+            figsize (tuple): A tuple specifying the figure size (width, height). Default is (16, 8).
+        
+        Returns:
+            None
         """
-
         plt.rcParams["figure.figsize"] = figsize
         plt.rcParams["figure.titlesize"] = 28
         plt.rcParams["axes.titlesize"] = 18
@@ -29,7 +33,7 @@ class Plot():
 
 
     @staticmethod
-    def histplot(data, rows, columns, color):
+    def histplot(data: pd.DataFrame, rows: int, columns: int, color: str, hue: str = None) -> None:
         """
         Create a histogram plot for each feature in the DataFrame.
         
@@ -38,18 +42,32 @@ class Plot():
             rows (int): Number of rows in the subplot grid.
             columns (int): Number of columns in the subplot grid.
             color (str): Color for the histograms and titles.
+            hue (str, optional): Feature name for grouping data by color. Default is None.
+        
+        Returns:
+            None
         """
-
         plt.suptitle(t="Distributions", color=color)
 
         for index, feature in enumerate(data.columns):
             plt.subplot(rows, columns, index + 1)
-            sns.histplot(data=data, x=feature, kde=True, color=color)
             plt.title(label=feature, color=color, pad=15)
-    
+
+            # check if the feature is numeric
+            if is_numeric_dtype(data[feature]):
+                if hue is not None:
+                    sns.histplot(data=data, x=feature, kde=True, palette=f"dark:{color}", hue=hue)
+                else:
+                    sns.histplot(data=data, x=feature, kde=True, color=color)
+            else:
+                if hue is not None:
+                    sns.countplot(data=data, x=feature, palette=f"dark:{color}", hue=hue)
+                else:
+                    sns.countplot(data=data, x=feature, color=color)
+
 
     @staticmethod
-    def feature_vs_target(data, target, rows, columns, color, scatter_color):
+    def feature_vs_target(data: pd.DataFrame, target: str, rows: int, columns: int, color: str, scatter_color: str) -> None:
         """
         Create scatter plots of each feature versus the target variable.
         
@@ -60,8 +78,10 @@ class Plot():
             columns (int): Number of columns in the subplot grid.
             color (str): Color for the subplot titles and axis labels.
             scatter_color (str): Color for the scatter plot points.
+        
+        Returns:
+            None
         """
-
         plt.suptitle(t="Feature vs Target", color=color)
         
         for index, feature in enumerate(data.columns):
@@ -73,7 +93,7 @@ class Plot():
     
 
     @staticmethod
-    def train_vs_test_accuracy(train_test_params, x, x_label, suptitle):
+    def train_vs_test_accuracy(train_test_params: list, x: np.ndarray, x_label: str, suptitle: str) -> None:
         """
         Plot accuracy of training vs. testing models.
         
@@ -83,11 +103,13 @@ class Plot():
                 - 'color': Color for the line plot.
                 - 'scatter_color': Color for the scatter plot points.
                 - 'y': Accuracy values to plot.
-            x (array-like): x-values for plotting.
+            x (np.ndarray): X-values for plotting.
             x_label (str): Label for the x-axis.
             suptitle (str): Title for the entire figure.
-        """
         
+        Returns:
+            None
+        """
         plt.figure(figsize=(16,8))
         plt.suptitle(t=suptitle)
 
