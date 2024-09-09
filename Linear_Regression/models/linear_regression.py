@@ -19,7 +19,7 @@ class LinearRegression():
         self.intercept_ = 0
 
 
-    def fit(self, X_train, y_train):
+    def fit(self, X_train: np.ndarray, y_train: np.ndarray) -> 'LinearRegression':
         """
         Fits the Linear Regression model to the training data.
 
@@ -40,8 +40,10 @@ class LinearRegression():
         self.intercept_ = self.weights[0]
         self.coef_ = self.weights[1:]
 
+        return self
 
-    def predict(self, X_test):
+
+    def predict(self, X_test: np.ndarray) -> np.ndarray:
         """
         Makes predictions using the Linear Regression model.
 
