@@ -13,16 +13,15 @@ class StandardScaler():
         z_score_ (numpy.ndarray): The standardized (z-score) values of the dataset.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the StandardScaler with empty lists for mean, standard deviation, and z-score.
         """
-
         self.mean_ = []
         self.std_ = []
         self.z_score_ = []
 
-    def fit(self, X):
+    def fit(self, X: np.ndarray) -> 'StandardScaler':
         """
         Computes the mean and standard deviation for each feature in the dataset.
 
@@ -32,7 +31,6 @@ class StandardScaler():
         Returns:
             None
         """
-
         self.mean_ = []
         self.std_ = []
         self.z_score_ = []
@@ -43,8 +41,10 @@ class StandardScaler():
 
             self.mean_.append(column_mean)
             self.std_.append(column_std)
+        
+        return self
 
-    def transform(self, X):
+    def transform(self, X: np.ndarray) -> np.ndarray:
         """
         Standardizes the dataset by scaling each feature to zero mean and unit variance.
 
@@ -54,11 +54,10 @@ class StandardScaler():
         Returns:
             numpy.ndarray: The standardized dataset with shape (n_samples, n_features).
         """
-
         self.z_score_ = np.array((X - self.mean_) / self.std_, dtype="float64").reshape(X.shape)
         return self.z_score_.reshape(X.shape)
     
-    def fit_transform(self, X):
+    def fit_transform(self, X: np.ndarray) -> np.ndarray:
         """
         Fits the scaler to the dataset and then transforms it.
 
@@ -70,7 +69,6 @@ class StandardScaler():
         Returns:
             numpy.ndarray: The standardized dataset with shape (n_samples, n_features).
         """
-        
         self.fit(X)
         self.transform(X)
         
