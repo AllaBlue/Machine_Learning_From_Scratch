@@ -37,7 +37,7 @@ class PolynomialFeatures():
                             n_samples is the number of samples and n_features is the number of features.
 
         Returns:
-            None
+            PolynomialFeatures: Returns self
         """
         _, n_features = X.shape
 
