@@ -13,3 +13,6 @@ venv/
 
 # Ignore Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+
+# Ignore Sphinx build directory
+docs/_build
