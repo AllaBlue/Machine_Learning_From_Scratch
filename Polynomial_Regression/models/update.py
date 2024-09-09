@@ -28,12 +28,11 @@ class ModelsUpdate():
         models (list): Information about custom and sklearn models, including evaluation metrics.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the ModelsUpdate class with empty lists for storing evaluation metrics 
         and predictions for both custom and sklearn models.
         """
-
         # Custom model metrics
         self.maes_custom = []
         self.mses_custom = []
@@ -52,7 +51,7 @@ class ModelsUpdate():
         self.models = []
 
 
-    def standardize(self, X_train, X_test):
+    def standardize(self, X_train: np.ndarray, X_test: np.ndarray) -> tuple:
         """
         Standardizes the training and testing data using both custom and sklearn scalers.
 
@@ -64,7 +63,6 @@ class ModelsUpdate():
             tuple: Standardized training and testing data for both custom and sklearn scalers, 
                    in the order (X_train_custom, X_test_custom, X_train_sklearn, X_test_sklearn).
         """
-
         # Custom standardization
         sc_custom = SC()
         X_train_custom = sc_custom.fit_transform(X_train)
@@ -77,7 +75,8 @@ class ModelsUpdate():
 
         return X_train_custom, X_test_custom, X_train_sklearn, X_test_sklearn
     
-    def get_metrics(self, X_train, X_test, y_train, y_test, degrees=11):
+    def get_metrics(self, X_train: np.ndarray, X_test: np.ndarray, 
+                    y_train: np.ndarray, y_test: np.ndarray, degrees: int = 11) -> None:
         """
         Computes and stores regression metrics (MAE, MSE, RMSE, R^2) for polynomial 
         regression models of various degrees using both custom and sklearn implementations.
@@ -92,7 +91,6 @@ class ModelsUpdate():
         Returns:
             None
         """
-
         # Standardize the data
         X_train_custom, X_test_custom, X_train_sklearn, X_test_sklearn = self.standardize(X_train, X_test)
 
@@ -148,7 +146,7 @@ class ModelsUpdate():
             self.r2_sklearn.append(r2_score(y_true=y_test, y_pred=pred_sklearn))
         
     
-    def update_models(self):
+    def update_models(self) -> None:
         """
         Updates the `models` attribute with information about the custom and sklearn models, 
         including metrics for each model.
@@ -156,7 +154,6 @@ class ModelsUpdate():
         Returns:
             None
         """
-
         self.models = [
             {
                 "model": self.lr_custom,
