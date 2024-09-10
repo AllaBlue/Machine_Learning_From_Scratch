@@ -11,5 +11,6 @@ setup(
         'seaborn',
         'jupyter',
         'sphinx',
+        'sphinx_rtd_theme'
     ],
 )
