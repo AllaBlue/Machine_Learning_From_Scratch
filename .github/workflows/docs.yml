@@ -30,15 +30,13 @@ jobs:
       - name: Autogenerate documentation
         run: |
           cd docs
-          sphinx-apidoc -o docs .
+          sphinx-apidoc -o docs machine_learning_from_scratch/
 
       - name: Build documentation
         run: |
           cd docs
           make html
-
-      - name: Upload documentation
-        uses: actions/upload-artifact@v3
-        with:
-          name: documentation
-          path: docs/_build/html
+      
+      - name: Run ghp-import
+        run: | 
+          ghp-import -n -p -f docs/_build/html
