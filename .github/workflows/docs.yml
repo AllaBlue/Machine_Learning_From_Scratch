@@ -30,7 +30,7 @@ jobs:
       - name: Autogenerate documentation
         run: |
           cd docs
-          sphinx-apidoc -o . ../  
+          sphinx-apidoc -o docs .
 
       - name: Build documentation
         run: |
