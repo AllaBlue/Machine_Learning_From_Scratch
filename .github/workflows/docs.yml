@@ -30,7 +30,7 @@ jobs:
       - name: Autogenerate documentation
         run: |
           cd docs
-          sphinx-apidoc -o docs machine_learning_from_scratch/
+          sphinx-apidoc -o docs .
 
       - name: Build documentation
         run: |
