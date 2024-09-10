@@ -11,6 +11,7 @@ setup(
         'seaborn',
         'jupyter',
         'sphinx',
-        'sphinx_rtd_theme'
+        'sphinx_rtd_theme',
+        'ghp-import'
     ],
 )
