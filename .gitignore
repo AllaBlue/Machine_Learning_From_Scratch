@@ -16,3 +16,6 @@ venv/
 
 # Ignore Sphinx build directory
 docs/_build
+
+# Ignore .joblib saved files
+*.joblib
