@@ -127,3 +127,17 @@ class Plot():
             plt.xlabel(xlabel=x_label)
             plt.ylabel(ylabel="Accuracy")
             plt.legend(markerscale=0.75)
+    
+    @staticmethod
+    def heatmap_features_target(df, target, cmap):
+        correlation_matrix = df.corr()[[target]]
+        correlation_matrix["absolute_corr"] = abs(correlation_matrix)
+
+        heatmap = sns.heatmap(correlation_matrix.drop(index=target)
+                            .sort_values(by="absolute_corr", ascending=False)
+                            .drop(columns=["absolute_corr"]), 
+                            annot=True, annot_kws={"fontsize": 15, "weight": "bold"}, cmap=cmap)
+        heatmap.set_title(f"Features Correlating with {target}", fontsize=28)
+        heatmap.set_xticklabels(heatmap.get_xticklabels(), fontsize=15)
+        heatmap.set_yticklabels(heatmap.get_yticklabels(), fontsize=15, rotation=0)
+        plt.tight_layout()
