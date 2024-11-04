@@ -1,0 +1,556 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear_Regression.models package &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Logistic_Regression package" href="Logistic_Regression.html" />
+    <link rel="prev" title="Linear_Regression package" href="Linear_Regression.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Machine_Learning_From_Scratch</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Linear_Regression.html">Linear_Regression package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="Linear_Regression.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Linear_Regression.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Linear_Regression.html#module-Linear_Regression">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Logistic_Regression.html">Logistic_Regression package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Polynomial_Regression.html">Polynomial_Regression package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Regularizations.html">Regularizations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K_Nearest_Neighbors.html">K_Nearest_Neighbors package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Machine_Learning_From_Scratch</a></li>
+          <li class="breadcrumb-item"><a href="Linear_Regression.html">Linear_Regression package</a></li>
+      <li class="breadcrumb-item active">Linear_Regression.models package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Linear_Regression.models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linear-regression-models-package">
+<h1>Linear_Regression.models package<a class="headerlink" href="#linear-regression-models-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-Linear_Regression.models.gradient_descent">
+<span id="linear-regression-models-gradient-descent-module"></span><h2>Linear_Regression.models.gradient_descent module<a class="headerlink" href="#module-Linear_Regression.models.gradient_descent" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Linear_Regression.models.gradient_descent.GradienDescent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Linear_Regression.models.gradient_descent.</span></span><span class="sig-name descname"><span class="pre">GradienDescent</span></span><a class="reference internal" href="_modules/Linear_Regression/models/gradient_descent.html#GradienDescent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.gradient_descent.GradienDescent" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A custom implementation of the Gradient Descent algorithm for linear regression.</p>
+<dl class="simple">
+<dt>The loss function used for optimization is Mean Squared Error (MSE), defined as:</dt><dd><p>MSE = (1/n) * sum((y - XW)^2)</p>
+</dd>
+<dt>The gradient of the loss function with respect to the weights is given by:</dt><dd><p>Gradient = (-2/n) * sum(X(y - XW))</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Linear_Regression.models.gradient_descent.GradienDescent.weights">
+<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#Linear_Regression.models.gradient_descent.GradienDescent.weights" title="Link to this definition"></a></dt>
+<dd><p>The weights of the linear regression model, initialized as None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.gradient_descent.GradienDescent.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#Linear_Regression.models.gradient_descent.GradienDescent" title="Linear_Regression.models.gradient_descent.GradienDescent"><span class="pre">GradienDescent</span></a></span></span><a class="reference internal" href="_modules/Linear_Regression/models/gradient_descent.html#GradienDescent.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.gradient_descent.GradienDescent.fit" title="Link to this definition"></a></dt>
+<dd><p>Fits the linear regression model using gradient descent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>np.ndarray</em>) – The input features for training, with shape (n_samples, n_features).</p></li>
+<li><p><strong>y_train</strong> (<em>np.ndarray</em>) – The target values for training, with shape (n_samples,).</p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – The step size for gradient descent updates.</p></li>
+<li><p><strong>iterations</strong> (<em>int</em>) – The number of iterations to perform gradient descent.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns self</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Linear_Regression.models.gradient_descent.GradienDescent" title="Linear_Regression.models.gradient_descent.GradienDescent">GradienDescent</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.gradient_descent.GradienDescent.get_gradient">
+<span class="sig-name descname"><span class="pre">get_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/gradient_descent.html#GradienDescent.get_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.gradient_descent.GradienDescent.get_gradient" title="Link to this definition"></a></dt>
+<dd><p>Calculates the gradient of the loss function with respect to the weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>np.ndarray</em>) – The input features for training, with shape (n_samples, n_features).</p></li>
+<li><p><strong>y_train</strong> (<em>np.ndarray</em>) – The target values for training, with shape (n_samples,).</p></li>
+<li><p><strong>weights</strong> (<em>np.ndarray</em>) – The current weights of the model, with shape (n_features + 1,).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed gradient, with shape (n_features + 1,).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.gradient_descent.GradienDescent.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/gradient_descent.html#GradienDescent.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.gradient_descent.GradienDescent.predict" title="Link to this definition"></a></dt>
+<dd><p>Predicts the target values for the given test data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X_test</strong> (<em>np.ndarray</em>) – The input features for testing, with shape (n_samples, n_features).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The predicted target values, with shape (n_samples,).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-Linear_Regression.models.linear_regression">
+<span id="linear-regression-models-linear-regression-module"></span><h2>Linear_Regression.models.linear_regression module<a class="headerlink" href="#module-Linear_Regression.models.linear_regression" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Linear_Regression.models.linear_regression.LinearRegression">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Linear_Regression.models.linear_regression.</span></span><span class="sig-name descname"><span class="pre">LinearRegression</span></span><a class="reference internal" href="_modules/Linear_Regression/models/linear_regression.html#LinearRegression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.linear_regression.LinearRegression" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Ordinary least squares Linear Regression.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Linear_Regression.models.linear_regression.LinearRegression.weights">
+<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#Linear_Regression.models.linear_regression.LinearRegression.weights" title="Link to this definition"></a></dt>
+<dd><p>The weights vector including the bias term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Linear_Regression.models.linear_regression.LinearRegression.coef_">
+<span class="sig-name descname"><span class="pre">coef_</span></span><a class="headerlink" href="#Linear_Regression.models.linear_regression.LinearRegression.coef_" title="Link to this definition"></a></dt>
+<dd><p>The weights vector without the bias term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Linear_Regression.models.linear_regression.LinearRegression.intercept_">
+<span class="sig-name descname"><span class="pre">intercept_</span></span><a class="headerlink" href="#Linear_Regression.models.linear_regression.LinearRegression.intercept_" title="Link to this definition"></a></dt>
+<dd><p>The bias term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.linear_regression.LinearRegression.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#Linear_Regression.models.linear_regression.LinearRegression" title="Linear_Regression.models.linear_regression.LinearRegression"><span class="pre">LinearRegression</span></a></span></span><a class="reference internal" href="_modules/Linear_Regression/models/linear_regression.html#LinearRegression.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.linear_regression.LinearRegression.fit" title="Link to this definition"></a></dt>
+<dd><p>Fits the Linear Regression model to the training data.</p>
+<p>This method calculates the weights vector using the ordinary least squares method:</p>
+<blockquote>
+<div><p>W = (X.T * X)^(-1) * (X.T * y)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>numpy.ndarray</em>) – The training data features with shape (n_samples, n_features).</p></li>
+<li><p><strong>y_train</strong> (<em>numpy.ndarray</em>) – The training data target values with shape (n_samples,).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns self</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Linear_Regression.models.linear_regression.LinearRegression" title="Linear_Regression.models.linear_regression.LinearRegression">LinearRegression</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.linear_regression.LinearRegression.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/linear_regression.html#LinearRegression.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.linear_regression.LinearRegression.predict" title="Link to this definition"></a></dt>
+<dd><p>Makes predictions using the Linear Regression model.</p>
+<p>This method uses the learned weights to predict target values for the test data:</p>
+<blockquote>
+<div><p>y_pred = w0 + w1X1 + … + wnXn = W * X_augmented</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X_test</strong> (<em>numpy.ndarray</em>) – The test data features with shape (n_samples, n_features).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The predicted target values with shape (n_samples,).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-Linear_Regression.models.regression_metrics">
+<span id="linear-regression-models-regression-metrics-module"></span><h2>Linear_Regression.models.regression_metrics module<a class="headerlink" href="#module-Linear_Regression.models.regression_metrics" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Linear_Regression.models.regression_metrics.RegressionMetrics">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Linear_Regression.models.regression_metrics.</span></span><span class="sig-name descname"><span class="pre">RegressionMetrics</span></span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.regression_metrics.RegressionMetrics" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to calculate various regression evaluation metrics.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.regression_metrics.RegressionMetrics.MSE">
+<span class="sig-name descname"><span class="pre">MSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.MSE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.regression_metrics.RegressionMetrics.MSE" title="Link to this definition"></a></dt>
+<dd><p>Calculate Mean Square Error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.regression_metrics.RegressionMetrics.RMSE">
+<span class="sig-name descname"><span class="pre">RMSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Linear_Regression.models.regression_metrics.RegressionMetrics.RMSE" title="Link to this definition"></a></dt>
+<dd><p>Calculate Root Mean Square Error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.regression_metrics.RegressionMetrics.MAE">
+<span class="sig-name descname"><span class="pre">MAE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.MAE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.regression_metrics.RegressionMetrics.MAE" title="Link to this definition"></a></dt>
+<dd><p>Calculate Mean Absolute Error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.regression_metrics.RegressionMetrics.R2">
+<span class="sig-name descname"><span class="pre">R2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.R2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.regression_metrics.RegressionMetrics.R2" title="Link to this definition"></a></dt>
+<dd><p>Calculate R2 score.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.regression_metrics.RegressionMetrics.print_metrics">
+<span class="sig-name descname"><span class="pre">print_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.print_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.regression_metrics.RegressionMetrics.print_metrics" title="Link to this definition"></a></dt>
+<dd><p>Print all regression metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.regression_metrics.RegressionMetrics.metrics_dataframe">
+<span class="sig-name descname"><span class="pre">metrics_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.metrics_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.regression_metrics.RegressionMetrics.metrics_dataframe" title="Link to this definition"></a></dt>
+<dd><p>Return all regression metrics as a DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MAE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.MAE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Calculate Mean Absolute Error (MAE).</p>
+<p>MAE measures the average magnitude of the errors in a set of predictions, without
+considering their direction. It’s the average over the test sample of the absolute
+differences between prediction and actual observation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The actual target values.</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Mean Absolute Error.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.MSE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Calculate Root Mean Square Error (RMSE).</p>
+<p>RMSE is the square root of the average of the squares of the errors, providing
+an indication of the magnitude of the errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The actual target values.</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Root Mean Square Error.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">R2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.R2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Calculate the R2 score (Coefficient of Determination).</p>
+<p>R2 score provides an indication of goodness of fit and measures how well unseen samples
+are likely to be predicted by the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The actual target values.</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The R2 score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metrics_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.metrics_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Return all regression metrics as a pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The actual target values.</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing MSE, RMSE, MAE, and R2 score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/regression_metrics.html#RegressionMetrics.print_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Print all regression metrics: MSE, RMSE, MAE, and R2 score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The actual target values.</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-Linear_Regression.models.standard_scaler">
+<span id="linear-regression-models-standard-scaler-module"></span><h2>Linear_Regression.models.standard_scaler module<a class="headerlink" href="#module-Linear_Regression.models.standard_scaler" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Linear_Regression.models.standard_scaler.StandardScaler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Linear_Regression.models.standard_scaler.</span></span><span class="sig-name descname"><span class="pre">StandardScaler</span></span><a class="reference internal" href="_modules/Linear_Regression/models/standard_scaler.html#StandardScaler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.standard_scaler.StandardScaler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that standardizes features by removing the mean and scaling to unit variance.</p>
+<dl class="simple">
+<dt>The standard score of a sample is calculated as:</dt><dd><p>z = (X - mean) / std</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Linear_Regression.models.standard_scaler.StandardScaler.mean_">
+<span class="sig-name descname"><span class="pre">mean_</span></span><a class="headerlink" href="#Linear_Regression.models.standard_scaler.StandardScaler.mean_" title="Link to this definition"></a></dt>
+<dd><p>The mean value for each feature in the training set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Linear_Regression.models.standard_scaler.StandardScaler.std_">
+<span class="sig-name descname"><span class="pre">std_</span></span><a class="headerlink" href="#Linear_Regression.models.standard_scaler.StandardScaler.std_" title="Link to this definition"></a></dt>
+<dd><p>The standard deviation for each feature in the training set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Linear_Regression.models.standard_scaler.StandardScaler.z_score_">
+<span class="sig-name descname"><span class="pre">z_score_</span></span><a class="headerlink" href="#Linear_Regression.models.standard_scaler.StandardScaler.z_score_" title="Link to this definition"></a></dt>
+<dd><p>The standardized (z-score) values of the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.standard_scaler.StandardScaler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#Linear_Regression.models.standard_scaler.StandardScaler" title="Linear_Regression.models.standard_scaler.StandardScaler"><span class="pre">StandardScaler</span></a></span></span><a class="reference internal" href="_modules/Linear_Regression/models/standard_scaler.html#StandardScaler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.standard_scaler.StandardScaler.fit" title="Link to this definition"></a></dt>
+<dd><p>Computes the mean and standard deviation for each feature in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>numpy.ndarray</em>) – The input data to fit the scaler on, with shape (n_samples, n_features).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns self</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Linear_Regression.models.standard_scaler.StandardScaler" title="Linear_Regression.models.standard_scaler.StandardScaler">StandardScaler</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.standard_scaler.StandardScaler.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/standard_scaler.html#StandardScaler.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.standard_scaler.StandardScaler.fit_transform" title="Link to this definition"></a></dt>
+<dd><p>Fits the scaler to the dataset and then transforms it.</p>
+<p>This method combines <cite>fit</cite> and <cite>transform</cite> into a single step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>numpy.ndarray</em>) – The input data to fit and transform, with shape (n_samples, n_features).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The standardized dataset with shape (n_samples, n_features).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Linear_Regression.models.standard_scaler.StandardScaler.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Linear_Regression/models/standard_scaler.html#StandardScaler.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Linear_Regression.models.standard_scaler.StandardScaler.transform" title="Link to this definition"></a></dt>
+<dd><p>Standardizes the dataset by scaling each feature to zero mean and unit variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>numpy.ndarray</em>) – The input data to transform, with shape (n_samples, n_features).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The standardized dataset with shape (n_samples, n_features).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-Linear_Regression.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Linear_Regression.models" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Linear_Regression.html" class="btn btn-neutral float-left" title="Linear_Regression package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Logistic_Regression.html" class="btn btn-neutral float-right" title="Logistic_Regression package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

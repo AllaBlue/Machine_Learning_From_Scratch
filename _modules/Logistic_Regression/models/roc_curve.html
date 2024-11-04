@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistic_Regression.models.roc_curve &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Machine_Learning_From_Scratch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Logistic_Regression.models.roc_curve</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Logistic_Regression.models.roc_curve</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">Logistic_Regression.models.logistic_metrics</span> <span class="kn">import</span> <span class="n">LogisticMetrics</span>
+
+<div class="viewcode-block" id="RocCurvePlot">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.roc_curve.RocCurvePlot">[docs]</a>
+<span class="k">class</span> <span class="nc">RocCurvePlot</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to compute and plot Receiver Operating Characteristic (ROC) curves.</span>
+
+<span class="sd">    This class provides methods to compute the ROC curve, determine the optimal threshold using Youden&#39;s Index, </span>
+<span class="sd">    and plot the ROC curve along with the area under the curve (AUC).</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        x1 (float): X-coordinate for the start point of the ROC curve.</span>
+<span class="sd">        y1 (float): Y-coordinate for the start point of the ROC curve.</span>
+<span class="sd">        x3 (float): X-coordinate for the end point of the ROC curve.</span>
+<span class="sd">        y3 (float): Y-coordinate for the end point of the ROC curve.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the RocCurvePlot class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y3</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RocCurvePlot.roc_curve">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.roc_curve.RocCurvePlot.roc_curve">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">roc_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_score</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the ROC curve for binary classification.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (np.ndarray): True binary labels of shape (n_samples,).</span>
+<span class="sd">            y_score (np.ndarray): Target scores or probabilities of shape (n_samples,).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing:</span>
+<span class="sd">                - np.ndarray: False Positive Rates for each threshold.</span>
+<span class="sd">                - np.ndarray: True Positive Rates for each threshold.</span>
+<span class="sd">                - np.ndarray: Thresholds used to compute the FPR and TPR.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+        <span class="n">y_true_binary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">unique_labels</span> <span class="o">==</span> <span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_true</span><span class="p">])</span>
+        <span class="c1"># true positive rates</span>
+        <span class="n">tprs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># false positive rates</span>
+        <span class="n">fprs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">threshold</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">threshold</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">y_score</span><span class="p">])</span>
+            <span class="n">tpr</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">recall_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true_binary</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">fpr</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">recall_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true_binary</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">tprs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tpr</span><span class="p">)</span>
+            <span class="n">fprs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fpr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fprs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tprs</span><span class="p">),</span> <span class="n">thresholds</span></div>
+
+    
+<div class="viewcode-block" id="RocCurvePlot.optimal_threshold">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.roc_curve.RocCurvePlot.optimal_threshold">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">optimal_threshold</span><span class="p">(</span><span class="n">fpr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tpr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds the optimal threshold using Youden&#39;s Index.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fpr (np.ndarray): False Positive Rates of shape (n_thresholds,).</span>
+<span class="sd">            tpr (np.ndarray): True Positive Rates of shape (n_thresholds,).</span>
+<span class="sd">            thresholds (np.ndarray): Thresholds used to compute the FPR and TPR.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing:</span>
+<span class="sd">                - int: Index of the optimal threshold.</span>
+<span class="sd">                - float: Optimal threshold value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="n">tpr</span> <span class="o">-</span> <span class="n">fpr</span>
+        <span class="n">optimal_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">J</span><span class="p">)</span>
+        <span class="n">optimal_threshold</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">optimal_index</span><span class="p">,</span> <span class="n">optimal_threshold</span></div>
+
+    
+<div class="viewcode-block" id="RocCurvePlot.plot">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.roc_curve.RocCurvePlot.plot">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tpr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">auc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fpr_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tpr_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+             <span class="n">optimal_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the ROC curve.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fpr (np.ndarray): False Positive Rates of shape (n_thresholds,).</span>
+<span class="sd">            tpr (np.ndarray): True Positive Rates of shape (n_thresholds,).</span>
+<span class="sd">            auc (float): Area Under the Curve.</span>
+<span class="sd">            fpr_threshold (float): False Positive Rate at the optimal threshold.</span>
+<span class="sd">            tpr_threshold (float): True Positive Rate at the optimal threshold.</span>
+<span class="sd">            optimal_threshold (float): Optimal threshold value.</span>
+<span class="sd">            ax (plt.Axes): The axes on which to plot.</span>
+<span class="sd">            title (str): Title of the plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;ROC Curve&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightcoral&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightcoral&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightcoral&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;AUC = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">auc</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">fpr_threshold</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">tpr_threshold</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lavenderblush&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> 
+                    <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;lightcoral&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;optimal threshold = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">optimal_threshold</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;False Positive Rate: Class 1&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;True Positive Rate: Class 1&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+        <span class="c1"># ax.set_xticks(ax.get_xticks(), fontsize=14)</span>
+        <span class="c1"># ax.set_yticks(ax.get_yticks(), fontsize=14)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">markerscale</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RocCurvePlot.auc">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.roc_curve.RocCurvePlot.auc">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tpr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the Area Under the ROC Curve (AUC) using integral calculations.</span>
+
+<span class="sd">        The area under the ROC curve (AUC) is calculated by summing the areas of trapezoids formed between consecutive points on the ROC curve. The integral method used here involves approximating the area under the curve by breaking it into trapezoids and summing their areas.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fpr (np.ndarray): False Positive Rates of shape (n_thresholds,).</span>
+<span class="sd">            tpr (np.ndarray): True Positive Rates of shape (n_thresholds,).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: The computed AUC value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">auc</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fpr</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fpr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">x1</span> <span class="o">=</span> <span class="n">fpr</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">x2</span> <span class="o">=</span> <span class="n">fpr</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">y1</span> <span class="o">=</span> <span class="n">tpr</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">y2</span> <span class="o">=</span> <span class="n">tpr</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">x2</span><span class="o">==</span><span class="n">x1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Compute the slope of the line segment (the tangent)</span>
+                <span class="n">tangent</span> <span class="o">=</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span>
+
+                <span class="c1"># Area of the trapezoid is computed using the integral of the line segment</span>
+                <span class="c1"># y = m(x - x1) + y1, where m is the slope (tangent)</span>
+                <span class="c1"># Integral of y from x1 to x2 gives the area under the line segment</span>
+
+                <span class="c1"># Integral calculation:</span>
+                <span class="c1"># area = integral of (m(x - x1) + y1) dx from x1 to x2</span>
+                <span class="c1">#       = [m(x^2/2 - x1*x) + y1*x] from x1 to x2</span>
+                <span class="c1">#       = x2(m(x2/2 - x1) + y1) - x1(m(x1/2 - x1) + y1)</span>
+                
+                <span class="n">area</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">*</span> <span class="p">(</span><span class="n">tangent</span> <span class="o">*</span> <span class="p">(</span><span class="n">x2</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span> <span class="o">+</span> <span class="n">y1</span><span class="p">)</span> <span class="o">-</span> <span class="n">x1</span> <span class="o">*</span> <span class="p">(</span><span class="n">tangent</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span> <span class="o">+</span> <span class="n">y1</span><span class="p">)</span>
+                <span class="c1"># Add the calculated area to the total AUC</span>
+                <span class="n">auc</span> <span class="o">+=</span> <span class="n">area</span>
+
+        <span class="k">return</span> <span class="n">auc</span>    </div>
+</div>
+
+    
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

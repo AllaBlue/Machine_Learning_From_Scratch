@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polynomial_Regression.models.update &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Machine_Learning_From_Scratch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Polynomial_Regression.models.update</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Polynomial_Regression.models.update</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">Linear_Regression.models.standard_scaler</span> <span class="kn">import</span> <span class="n">StandardScaler</span> <span class="k">as</span> <span class="n">SC</span>
+<span class="kn">from</span> <span class="nn">Polynomial_Regression.models.polynomial_features</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span> <span class="k">as</span> <span class="n">PF</span>
+<span class="kn">from</span> <span class="nn">Linear_Regression.models.linear_regression</span> <span class="kn">import</span> <span class="n">LinearRegression</span> <span class="k">as</span> <span class="n">LR</span>
+<span class="kn">from</span> <span class="nn">Linear_Regression.models.regression_metrics</span> <span class="kn">import</span> <span class="n">RegressionMetrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">PolynomialFeatures</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="ModelsUpdate">
+<a class="viewcode-back" href="../../../Polynomial_Regression.models.html#Polynomial_Regression.models.update.ModelsUpdate">[docs]</a>
+<span class="k">class</span> <span class="nc">ModelsUpdate</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to compare custom and sklearn polynomial regression models by evaluating them </span>
+<span class="sd">    on standardized data across multiple polynomial degrees and storing the results.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        maes_custom (list): Mean absolute errors for custom models.</span>
+<span class="sd">        mses_custom (list): Mean squared errors for custom models.</span>
+<span class="sd">        rmses_custom (list): Root mean squared errors for custom models.</span>
+<span class="sd">        r2_custom (list): R^2 scores for custom models.</span>
+<span class="sd">        preds_custom (list): Predictions from custom models.</span>
+
+<span class="sd">        maes_sklearn (list): Mean absolute errors for sklearn models.</span>
+<span class="sd">        mses_sklearn (list): Mean squared errors for sklearn models.</span>
+<span class="sd">        rmses_sklearn (list): Root mean squared errors for sklearn models.</span>
+<span class="sd">        r2_sklearn (list): R^2 scores for sklearn models.</span>
+<span class="sd">        preds_sklearn (list): Predictions from sklearn models.</span>
+
+<span class="sd">        models (list): Information about custom and sklearn models, including evaluation metrics.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ModelsUpdate class with empty lists for storing evaluation metrics </span>
+<span class="sd">        and predictions for both custom and sklearn models.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Custom model metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maes_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mses_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmses_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r2_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preds_custom</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Sklearn model metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maes_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mses_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmses_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r2_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preds_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Stores model information for comparison</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="ModelsUpdate.standardize">
+<a class="viewcode-back" href="../../../Polynomial_Regression.models.html#Polynomial_Regression.models.update.ModelsUpdate.standardize">[docs]</a>
+    <span class="k">def</span> <span class="nf">standardize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">X_test</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Standardizes the training and testing data using both custom and sklearn scalers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features of shape (n_samples, n_features).</span>
+<span class="sd">            X_test (np.ndarray): Testing data features of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Standardized training and testing data for both custom and sklearn scalers, </span>
+<span class="sd">                   in the order (X_train_custom, X_test_custom, X_train_sklearn, X_test_sklearn).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Custom standardization</span>
+        <span class="n">sc_custom</span> <span class="o">=</span> <span class="n">SC</span><span class="p">()</span>
+        <span class="n">X_train_custom</span> <span class="o">=</span> <span class="n">sc_custom</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+        <span class="n">X_test_custom</span> <span class="o">=</span> <span class="n">sc_custom</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+        <span class="c1"># Sklearn standardization</span>
+        <span class="n">sc_sklearn</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="n">X_train_sklearn</span> <span class="o">=</span> <span class="n">sc_sklearn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+        <span class="n">X_test_sklearn</span> <span class="o">=</span> <span class="n">sc_sklearn</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">X_train_custom</span><span class="p">,</span> <span class="n">X_test_custom</span><span class="p">,</span> <span class="n">X_train_sklearn</span><span class="p">,</span> <span class="n">X_test_sklearn</span></div>
+
+    
+<div class="viewcode-block" id="ModelsUpdate.get_metrics">
+<a class="viewcode-back" href="../../../Polynomial_Regression.models.html#Polynomial_Regression.models.update.ModelsUpdate.get_metrics">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">X_test</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+                    <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_test</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">degrees</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">11</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes and stores regression metrics (MAE, MSE, RMSE, R^2) for polynomial </span>
+<span class="sd">        regression models of various degrees using both custom and sklearn implementations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features of shape (n_samples, n_features).</span>
+<span class="sd">            X_test (np.ndarray): Testing data features of shape (n_samples, n_features).</span>
+<span class="sd">            y_train (np.ndarray): Training data target values of shape (n_samples,).</span>
+<span class="sd">            y_test (np.ndarray): Testing data target values of shape (n_samples,).</span>
+<span class="sd">            degrees (int): Maximum degree of the polynomial features to be considered. Default is 11.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Standardize the data</span>
+        <span class="n">X_train_custom</span><span class="p">,</span> <span class="n">X_test_custom</span><span class="p">,</span> <span class="n">X_train_sklearn</span><span class="p">,</span> <span class="n">X_test_sklearn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardize</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">)</span>
+
+        <span class="c1"># Clear previous metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maes_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mses_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmses_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r2_custom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preds_custom</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">maes_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mses_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmses_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r2_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preds_sklearn</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Loop through each degree to compute metrics</span>
+        <span class="k">for</span> <span class="n">degree</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">degrees</span><span class="p">):</span>
+
+            <span class="c1"># Custom polynomial feature transformation</span>
+            <span class="n">pf_custom</span> <span class="o">=</span> <span class="n">PF</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">)</span>
+            <span class="n">X_train_pf_custom</span> <span class="o">=</span> <span class="n">pf_custom</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_custom</span><span class="p">)</span>
+            <span class="n">X_test_pf_custom</span> <span class="o">=</span> <span class="n">pf_custom</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_custom</span><span class="p">)</span>
+
+            <span class="c1"># Sklearn polynomial feature transformation</span>
+            <span class="n">pf_sklearn</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">)</span>
+            <span class="n">X_train_pf_sklearn</span> <span class="o">=</span> <span class="n">pf_sklearn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_sklearn</span><span class="p">)</span>
+            <span class="n">X_test_pf_sklearn</span> <span class="o">=</span> <span class="n">pf_sklearn</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_sklearn</span><span class="p">)</span>
+
+            <span class="c1"># Fit custom linear regression model and predict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lr_custom</span> <span class="o">=</span> <span class="n">LR</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lr_custom</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_pf_custom</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">pred_custom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_custom</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pf_custom</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">preds_custom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred_custom</span><span class="p">)</span>
+
+            <span class="c1"># Fit sklearn linear regression model and predict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lr_sklern</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lr_sklern</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_pf_sklearn</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">pred_sklearn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_sklern</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_pf_sklearn</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">preds_sklearn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred_sklearn</span><span class="p">)</span>
+
+
+            <span class="c1"># Calculate and store custom model metrics</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maes_custom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RegressionMetrics</span><span class="o">.</span><span class="n">MAE</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_custom</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mses_custom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RegressionMetrics</span><span class="o">.</span><span class="n">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_custom</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rmses_custom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RegressionMetrics</span><span class="o">.</span><span class="n">RMSE</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_custom</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">r2_custom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RegressionMetrics</span><span class="o">.</span><span class="n">R2</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_custom</span><span class="p">))</span>
+
+            <span class="c1"># Calculate and store sklearn model metrics</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maes_sklearn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_sklearn</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mses_sklearn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_sklearn</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rmses_sklearn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_sklearn</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">r2_sklearn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">pred_sklearn</span><span class="p">))</span></div>
+
+        
+    
+<div class="viewcode-block" id="ModelsUpdate.update_models">
+<a class="viewcode-back" href="../../../Polynomial_Regression.models.html#Polynomial_Regression.models.update.ModelsUpdate.update_models">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_models</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the `models` attribute with information about the custom and sklearn models, </span>
+<span class="sd">        including metrics for each model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_custom</span><span class="p">,</span>
+                <span class="s2">&quot;maes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">maes_custom</span><span class="p">,</span>
+                <span class="s2">&quot;mses&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mses_custom</span><span class="p">,</span>
+                <span class="s2">&quot;rmses&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmses_custom</span><span class="p">,</span>
+                <span class="s2">&quot;r2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">r2_custom</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Custom&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;y_preds&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">preds_custom</span><span class="p">,</span>
+                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;aquamarine&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;aquamarine&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;scattercolor&quot;</span><span class="p">:</span> <span class="s2">&quot;darkslategrey&quot;</span>
+                
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_sklern</span><span class="p">,</span>
+                <span class="s2">&quot;maes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">maes_sklearn</span><span class="p">,</span>
+                <span class="s2">&quot;mses&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mses_sklearn</span><span class="p">,</span>
+                <span class="s2">&quot;rmses&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmses_sklearn</span><span class="p">,</span>
+                <span class="s2">&quot;r2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">r2_sklearn</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Sklearn&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;y_preds&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">preds_sklearn</span><span class="p">,</span>
+                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;khaki&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;khaki&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;scattercolor&quot;</span><span class="p">:</span> <span class="s2">&quot;sienna&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Define metrics to evaluate</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;maes&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean Absolute Error&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mses&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean Squared Error&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rmses&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Root Mean Squared Error&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;r2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;R^2 Score&quot;</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Compute and store the best metrics for each model</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+                <span class="c1"># Determine whether to find the minimum or maximum value</span>
+                <span class="n">measure</span> <span class="o">=</span> <span class="s2">&quot;max&quot;</span> <span class="k">if</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;r2&quot;</span> <span class="k">else</span> <span class="s2">&quot;min&quot;</span>
+                <span class="n">func1</span> <span class="o">=</span> <span class="nb">min</span> <span class="k">if</span> <span class="n">measure</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="nb">max</span>
+                <span class="n">func2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span> <span class="k">if</span> <span class="n">measure</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span>
+                <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">measure</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">func1</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]])</span>
+                <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s2">_arg</span><span class="si">{</span><span class="n">measure</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">func2</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]])</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

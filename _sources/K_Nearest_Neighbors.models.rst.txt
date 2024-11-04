@@ -1,0 +1,21 @@
+K\_Nearest\_Neighbors.models package
+====================================
+
+Submodules
+----------
+
+K\_Nearest\_Neighbors.models.k\_nearest\_neighbors module
+---------------------------------------------------------
+
+.. automodule:: K_Nearest_Neighbors.models.k_nearest_neighbors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: K_Nearest_Neighbors.models
+   :members:
+   :undoc-members:
+   :show-inheritance:

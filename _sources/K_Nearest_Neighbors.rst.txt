@@ -1,0 +1,18 @@
+K\_Nearest\_Neighbors package
+=============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   K_Nearest_Neighbors.models
+
+Module contents
+---------------
+
+.. automodule:: K_Nearest_Neighbors
+   :members:
+   :undoc-members:
+   :show-inheritance:

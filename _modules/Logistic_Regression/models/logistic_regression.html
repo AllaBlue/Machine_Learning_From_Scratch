@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistic_Regression.models.logistic_regression &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Machine_Learning_From_Scratch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Logistic_Regression.models.logistic_regression</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Logistic_Regression.models.logistic_regression</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span> <span class="k">as</span> <span class="n">LR</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<div class="viewcode-block" id="LogisticRegression">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression">[docs]</a>
+<span class="k">class</span> <span class="nc">LogisticRegression</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Logistic Regression using gradient descent.</span>
+
+<span class="sd">    The objective function (log-loss) for binary logistic regression is:</span>
+<span class="sd">        L(W, b) = -(1/n) * Σ [y * log(p) + (1 - y) * log(1 - p)]</span>
+<span class="sd">    where:</span>
+<span class="sd">        - p = sigmoid(XW + b) is the predicted probability,</span>
+<span class="sd">        - X is the feature matrix,</span>
+<span class="sd">        - W are the weights, and</span>
+<span class="sd">        - b is the bias term.</span>
+
+<span class="sd">    The gradients for the weights and bias are:</span>
+<span class="sd">        Gradient_W = (1/n) * Σ X.T * (p - y)</span>
+<span class="sd">        Gradient_b = (1/n) * Σ (p - y)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        coef_ (np.ndarray): Learned coefficients for the features.</span>
+<span class="sd">        intercept_ (float): Learned bias term.</span>
+<span class="sd">        learning_rate (float): Step size for gradient descent.</span>
+<span class="sd">        iterations (int): Number of iterations for gradient descent.</span>
+<span class="sd">        loss_ (list): List of loss values at each iteration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the LogisticRegression class with a learning rate and number of iterations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            learning_rate (float): The step size for gradient descent updates.</span>
+<span class="sd">            iterations (int): Number of iterations for gradient descent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+
+<div class="viewcode-block" id="LogisticRegression.fit">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the logistic regression model using gradient descent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Training feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            y (np.ndarray): Target labels of shape (n_samples,).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_labels</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">):</span>
+            <span class="c1"># calculate loss</span>
+            <span class="n">y_pred_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loss_</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_binary</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_pred_prob</span><span class="p">))</span>
+                                                   <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_binary</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y_pred_prob</span><span class="p">))))</span>
+            
+            <span class="c1"># calculate gradients</span>
+            <span class="n">gradient_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gradient_weights</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_binary</span><span class="p">)</span>
+            <span class="n">gradient_bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gradient_bias</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_binary</span><span class="p">)</span>
+
+            <span class="c1"># update weights and bias</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient_weights</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient_bias</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticRegression.predict_proba">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression.predict_proba">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts the probability of each class for the input data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Probabilities for each class, shape (n_samples, 2).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">probabilities_of_positive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">probabilities_of_positive</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">probability</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">probabilities_of_positive</span><span class="p">):</span>
+            <span class="c1"># firstly show probabilities of 0, then 1</span>
+            <span class="n">probabilities</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">probability</span><span class="p">,</span> <span class="n">probability</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">probabilities</span></div>
+
+    
+<div class="viewcode-block" id="LogisticRegression.predict">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts class labels for the input data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted class labels of shape (n_samples,).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="c1"># Convert probabilities to binary class predictions</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">y_pred</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticRegression.get_gradient_weights">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression.get_gradient_weights">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_gradient_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the gradient of the weights for logistic regression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            y (np.ndarray): Binary target labels of shape (n_samples,).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Gradient of the weights, shape (n_features,).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="LogisticRegression.get_gradient_bias">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression.get_gradient_bias">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_gradient_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the gradient of the bias for logistic regression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            y (np.ndarray): Binary target labels of shape (n_samples,).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Gradient of the bias.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> 
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticRegression.sigmoid">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression.sigmoid">[docs]</a>
+    <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the sigmoid function to the input.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (np.ndarray): Input array.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Sigmoid transformation of the input.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span></div>
+
+    
+    
+<div class="viewcode-block" id="LogisticRegression.get_labels">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.LogisticRegression.get_labels">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the target labels to binary values for logistic regression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y (np.ndarray): Target labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+        <span class="c1"># convert labels into two classes: 0 and 1 -&gt; get index of true class from unique labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_binary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span> <span class="o">==</span> <span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">])</span></div>
+</div>
+
+
+    
+
+
+<div class="viewcode-block" id="MultinomialRegression">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression">[docs]</a>
+<span class="k">class</span> <span class="nc">MultinomialRegression</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multinomial Logistic Regression using gradient descent.</span>
+
+<span class="sd">    The objective function (log-loss) for multinomial logistic regression is:</span>
+<span class="sd">        L(W, b) = -(1/n) * Σ Σ y_k * log(p_k)</span>
+<span class="sd">    where:</span>
+<span class="sd">        - p_k = softmax(XW + b)_k is the predicted probability for class k,</span>
+<span class="sd">        - y_k is a one-hot encoded vector for class k.</span>
+
+<span class="sd">    The gradients for the weights and bias are:</span>
+<span class="sd">        Gradient_W = (1/n) * Σ X.T * (p_k - y_k)</span>
+<span class="sd">        Gradient_b = (1/n) * Σ (p_k - y_k)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        coef_ (np.ndarray): Learned coefficients for each class.</span>
+<span class="sd">        intercept_ (np.ndarray): Learned bias term for each class.</span>
+<span class="sd">        learning_rate (float): Step size for gradient descent.</span>
+<span class="sd">        iterations (int): Number of iterations for gradient descent.</span>
+<span class="sd">        loss_ (list): List of loss values at each iteration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the MultinomialRegression class with a learning rate and number of iterations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            learning_rate (float): The step size for gradient descent.</span>
+<span class="sd">            iterations (int): Number of iterations for gradient descent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+
+<div class="viewcode-block" id="MultinomialRegression.fit">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;MultinomialRegression&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the multinomial logistic regression model using gradient descent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Training feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            y (np.ndarray): Target labels of shape (n_samples,).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MultinomialRegression: Returns self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_labels</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_weights</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_bias</span><span class="p">()</span>
+        <span class="n">one_hot_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_hot_encoder</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">):</span>
+            <span class="c1"># calculate gradients</span>
+            <span class="n">gradient_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gradient_weights</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">one_hot_y</span><span class="p">)</span>
+            <span class="n">gradient_bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gradient_bias</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">one_hot_y</span><span class="p">)</span>
+
+            <span class="c1"># calculate loss</span>
+            <span class="n">y_pred_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loss_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">one_hot_y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_pred_proba</span><span class="p">)))</span>
+
+            <span class="c1"># update weights and bias</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient_weights</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient_bias</span>
+        
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="MultinomialRegression.one_hot_encoder">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.one_hot_encoder">[docs]</a>
+    <span class="k">def</span> <span class="nf">one_hot_encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encodes the target labels as one-hot vectors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y (np.ndarray): Target labels of shape (n_samples,).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: One-hot encoded labels of shape (n_samples, n_classes).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">one_hot_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="n">label_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span> <span class="o">==</span> <span class="n">label</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">one_hot_y_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">)))</span>
+            <span class="n">one_hot_y_row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">label_index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">one_hot_y</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">one_hot_y_row</span>
+        
+        <span class="k">return</span> <span class="n">one_hot_y</span></div>
+
+    
+
+<div class="viewcode-block" id="MultinomialRegression.init_weights">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.init_weights">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the weights for the multinomial regression model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">),</span> <span class="n">n_features</span><span class="p">))</span></div>
+
+    
+<div class="viewcode-block" id="MultinomialRegression.init_bias">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.init_bias">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the bias for the multinomial regression model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="MultinomialRegression.get_gradient_weights">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.get_gradient_weights">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_gradient_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the gradient of the weights for multinomial logistic regression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            y (np.ndarray): One-hot encoded target labels of shape (n_samples, n_classes).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Gradient of the weights, shape (n_classes, n_features).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">y_pred_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="n">gradient_weights</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="n">y_pred_proba</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">gradient_weights</span><span class="o">.</span><span class="n">T</span></div>
+
+    
+<div class="viewcode-block" id="MultinomialRegression.get_gradient_bias">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.get_gradient_bias">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_gradient_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the gradient of the bias for multinomial logistic regression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            y (np.ndarray): One-hot encoded target labels of shape (n_samples, n_classes).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Gradient of the bias, shape (n_classes,).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="n">y_pred_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">gradient_bias</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred_proba</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">gradient_bias</span><span class="o">.</span><span class="n">T</span></div>
+
+    
+
+<div class="viewcode-block" id="MultinomialRegression.predict">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts class labels for the input data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted class labels of shape (n_samples,).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">probabilities</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_pred</span><span class="p">):</span>
+            <span class="n">y_pred</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">probabilities</span><span class="p">[</span><span class="n">index</span><span class="p">])]</span>
+
+        <span class="k">return</span> <span class="n">y_pred</span></div>
+
+    
+<div class="viewcode-block" id="MultinomialRegression.predict_proba">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.predict_proba">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts the probability of each class for the input data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Probabilities for each class, shape (n_samples, n_classes).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">),</span> <span class="n">n_samples</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_hot_labels</span><span class="p">):</span>
+            <span class="n">y_pred</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_label_proba</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">one_hot_label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">T</span></div>
+
+
+
+<div class="viewcode-block" id="MultinomialRegression.predict_label_proba">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.predict_label_proba">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_label_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">one_hot_label</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts the probability of a specific class label.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            one_hot_label (np.ndarray): One-hot encoded label.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Probabilities of the specified class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get logit for this particular label (or class)</span>
+        <span class="n">logit_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logit_label</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">one_hot_label</span><span class="o">=</span><span class="n">one_hot_label</span><span class="p">)</span>
+
+        <span class="n">normalization_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_hot_labels</span><span class="p">:</span>
+            <span class="n">logit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logit_label</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">one_hot_label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">normalization_sum</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logit</span><span class="p">)</span>
+        
+        <span class="n">y_pred_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logit_label</span><span class="p">)</span> <span class="o">/</span> <span class="n">normalization_sum</span>
+
+        <span class="k">return</span> <span class="n">y_pred_label</span></div>
+
+
+
+<div class="viewcode-block" id="MultinomialRegression.logit_label">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.logit_label">[docs]</a>
+    <span class="k">def</span> <span class="nf">logit_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">one_hot_label</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the logit (pre-softmax) for a specific class label.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Feature matrix of shape (n_samples, n_features).</span>
+<span class="sd">            one_hot_label (np.ndarray): One-hot encoded label.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Logit values for the specified class label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">one_hot_label</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">logit_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="n">label_index</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="n">label_index</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">logit_label</span></div>
+
+    
+<div class="viewcode-block" id="MultinomialRegression.get_labels">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_regression.MultinomialRegression.get_labels">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the target labels to numerical values for multinomial regression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y (np.ndarray): Target labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">one_hot_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_hot_encoder</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">)</span></div>
+</div>
+
+        
+
+
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+<span class="c1">#                            Testing of Logistic Regression</span>
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+
+
+<span class="c1"># logit = LogisticRegression(learning_rate=0.01, iterations=1)</span>
+<span class="c1"># lr = LR()</span>
+
+<span class="c1"># X = np.array([1,2,3,4,2,4,6,8,1,5,1,5,9, 12,3,4]).reshape(4,4)</span>
+<span class="c1"># y = np.array([0, 0, 1, 1])</span>
+
+<span class="c1"># sc = StandardScaler()</span>
+<span class="c1"># X = sc.fit_transform(X)</span>
+
+<span class="c1"># logit.fit(X,y)</span>
+<span class="c1"># lr.fit(X,y)</span>
+
+<span class="c1"># print(&quot;logit.coef_&quot;)</span>
+<span class="c1"># print(logit.coef_)</span>
+
+<span class="c1"># print(&quot;lr.coef_&quot;)</span>
+<span class="c1"># print(lr.coef_)</span>
+
+<span class="c1"># print(&quot;logit.intercept_&quot;)</span>
+<span class="c1"># print(logit.intercept_)</span>
+
+<span class="c1"># print(&quot;lr.intercept_&quot;)</span>
+<span class="c1"># print(lr.intercept_)</span>
+
+<span class="c1"># print(&quot;logit.predict_proba(X)&quot;)</span>
+<span class="c1"># print(logit.predict_proba(X))</span>
+
+<span class="c1"># print(&quot;lr.predict_proba(X)&quot;)</span>
+<span class="c1"># print(lr.predict_proba(X))</span>
+
+<span class="c1"># print(&quot;logit.loss_&quot;)</span>
+<span class="c1"># print(logit.loss_)</span>
+
+
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+<span class="c1">#                            Testing of Multinomial Regression</span>
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+
+
+<span class="c1"># X = np.arange(start=0, stop=40, step=1).reshape(10, 4)</span>
+<span class="c1"># y = np.hstack((np.ones(4) * 1, np.ones(3) * 2, np.ones(3) * 3))</span>
+<span class="c1"># mr = MultinomialRegression(learning_rate=0.01, iterations=1)</span>
+<span class="c1"># lr = LR()</span>
+
+<span class="c1"># lr.fit(X, y)</span>
+<span class="c1"># mr.fit(X,y)</span>
+
+<span class="c1"># print(&quot;mr.predict_proba(X)&quot;)</span>
+<span class="c1"># print(mr.predict_proba(X))</span>
+
+<span class="c1"># print(&quot;lr.predict_proba(X)&quot;)</span>
+<span class="c1"># print(lr.predict_proba(X))</span>
+
+<span class="c1"># print(&quot;mr.predict(X)&quot;)</span>
+<span class="c1"># print(mr.predict(X))</span>
+
+<span class="c1"># print(&quot;lr.predict(X)&quot;)</span>
+<span class="c1"># print(lr.predict(X))</span>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

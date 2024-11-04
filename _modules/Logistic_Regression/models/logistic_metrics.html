@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistic_Regression.models.logistic_metrics &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Machine_Learning_From_Scratch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Logistic_Regression.models.logistic_metrics</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Logistic_Regression.models.logistic_metrics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<div class="viewcode-block" id="LogisticMetrics">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics">[docs]</a>
+<span class="k">class</span> <span class="nc">LogisticMetrics</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A collection of static methods for calculating common metrics used in logistic regression </span>
+<span class="sd">    evaluation, including accuracy, precision, recall, F1 score, and confusion matrix.</span>
+
+<span class="sd">    These methods are designed to work with both binary and multiclass classification problems.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LogisticMetrics.accuracy">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.accuracy">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the accuracy of the predictions.</span>
+
+<span class="sd">        Accuracy is the proportion of correct predictions over the total number of predictions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (np.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (np.ndarray): Array of predicted labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Accuracy score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.true_positive">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.true_positive">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">true_positive</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the number of true positives for a given label.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+<span class="sd">            label: The label of interest.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Count of true positives.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_true</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_true</span> <span class="o">==</span> <span class="n">label</span><span class="p">))</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.true_negative">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.true_negative">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">true_negative</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the number of true negatives for a given label.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+<span class="sd">            label: The label of interest.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Count of true negatives.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_true</span> <span class="o">!=</span> <span class="n">label</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">!=</span> <span class="n">label</span><span class="p">))</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.false_positive">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.false_positive">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">false_positive</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the number of false positives for a given label.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+<span class="sd">            label: The label of interest.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Count of false positives.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_true</span> <span class="o">!=</span> <span class="n">label</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">==</span> <span class="n">label</span><span class="p">))</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.false_negative">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.false_negative">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">false_negative</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the number of false negatives for a given label.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+<span class="sd">            label: The label of interest.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Count of false negatives.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_true</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">!=</span> <span class="n">label</span><span class="p">))</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.recall_label">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.recall_label">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">recall_label</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates recall for a specific label.</span>
+
+<span class="sd">        Recall is the proportion of actual positives that were identified correctly.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+<span class="sd">            label: The label of interest.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Recall score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">true_positive</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">true_positive</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">false_negative</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">false_negative</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="c1"># total actual positive</span>
+        <span class="n">total_positive_labels</span> <span class="o">=</span> <span class="n">true_positive</span> <span class="o">+</span> <span class="n">false_negative</span>
+
+        <span class="k">return</span> <span class="n">true_positive</span> <span class="o">/</span> <span class="n">total_positive_labels</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.precision_label">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.precision_label">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">precision_label</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates precision for a specific label.</span>
+
+<span class="sd">        Precision is the proportion of positive predictions that were actually correct.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+<span class="sd">            label: The label of interest.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Precision score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">true_positive</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">true_positive</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">false_positive</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">false_positive</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="c1"># total predicted positive</span>
+        <span class="n">total_positive_guesses</span> <span class="o">=</span> <span class="n">true_positive</span> <span class="o">+</span> <span class="n">false_positive</span>
+
+        <span class="k">return</span> <span class="n">true_positive</span> <span class="o">/</span> <span class="n">total_positive_guesses</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.f1_score_label">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.f1_score_label">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">f1_score_label</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the F1 score for a specific label.</span>
+
+<span class="sd">        The F1 score is the harmonic mean of precision and recall.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+<span class="sd">            label: The label of interest.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: F1 score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">recall</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">recall_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">precission</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">precision_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">recall</span> <span class="o">*</span> <span class="n">precission</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">recall</span> <span class="o">+</span> <span class="n">precission</span><span class="p">)</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.recall">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.recall">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">recall</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the macro-average recall for all labels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Macro-average recall score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+        <span class="n">total_recall</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+            <span class="n">total_recall</span> <span class="o">+=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">recall_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        
+        <span class="n">recall</span> <span class="o">=</span> <span class="n">total_recall</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">recall</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.precision">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.precision">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the macro-average precision for all labels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Macro-average precision score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+        <span class="n">total_precission</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+            <span class="n">total_precission</span> <span class="o">+=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">precision_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        
+        <span class="n">precission</span> <span class="o">=</span> <span class="n">total_precission</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">precission</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.f1_score">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.f1_score">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the macro-average F1 score for all labels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Macro-average F1 score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+        <span class="n">total_f1_score</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+            <span class="n">total_f1_score</span> <span class="o">+=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">f1_score_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        
+        <span class="n">f1_score</span> <span class="o">=</span> <span class="n">total_f1_score</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">f1_score</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.confusion_matrix">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.confusion_matrix">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a confusion matrix for multiclass classification.</span>
+
+<span class="sd">        The confusion matrix shows the counts of true positives, false positives, </span>
+<span class="sd">        true negatives, and false negatives for each label.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray: A 2D confusion matrix with shape (n_labels, n_labels).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)))</span>
+ 
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">label_column</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+                <span class="c1"># on main diagonal all true positive of the label corresponding to the current column</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">true_positive</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_column</span><span class="p">)</span>
+                <span class="c1"># otherwise it is false positive of the label correspnsing to the current column</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">false_positive</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_column</span><span class="p">)</span>
+
+        
+        <span class="k">return</span> <span class="n">matrix</span></div>
+
+    
+
+<div class="viewcode-block" id="LogisticMetrics.classification_metrics_report">
+<a class="viewcode-back" href="../../../Logistic_Regression.models.html#Logistic_Regression.models.logistic_metrics.LogisticMetrics.classification_metrics_report">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">classification_metrics_report</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a comprehensive classification metrics report.</span>
+
+<span class="sd">        The report includes precision, recall, F1 score, and support for each label, </span>
+<span class="sd">        along with overall accuracy, macro-averaged precision, recall, and F1 score.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_true (numpy.ndarray): Array of true labels.</span>
+<span class="sd">            y_pred (numpy.ndarray): Array of predicted labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing classification metrics for each label and overall metrics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">unique_labels</span><span class="p">:</span>
+
+            <span class="n">label_data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">precision_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">recall_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="s2">&quot;f1_score&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">f1_score_label</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="s2">&quot;support&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_true</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="n">label_data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">label_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">label</span><span class="p">])</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_data_df</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">accuracy_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;f1_score&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="s2">&quot;support&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="p">}</span>
+
+        <span class="n">macro_average_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">precision</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">recall</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="s2">&quot;f1_score&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LogisticMetrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="s2">&quot;support&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="p">}</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">accuracy_data</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;macro_average&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">macro_average_data</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">df</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

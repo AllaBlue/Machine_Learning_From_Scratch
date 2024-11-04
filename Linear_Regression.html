@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear_Regression package &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Linear_Regression.models package" href="Linear_Regression.models.html" />
+    <link rel="prev" title="Machine_Learning_From_Scratch" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Machine_Learning_From_Scratch</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Linear_Regression package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html">Linear_Regression.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-Linear_Regression">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Logistic_Regression.html">Logistic_Regression package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Polynomial_Regression.html">Polynomial_Regression package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Regularizations.html">Regularizations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K_Nearest_Neighbors.html">K_Nearest_Neighbors package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Machine_Learning_From_Scratch</a></li>
+      <li class="breadcrumb-item active">Linear_Regression package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Linear_Regression.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linear-regression-package">
+<h1>Linear_Regression package<a class="headerlink" href="#linear-regression-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Linear_Regression.models.html">Linear_Regression.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.models.html#module-Linear_Regression.models.gradient_descent">Linear_Regression.models.gradient_descent module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.gradient_descent.GradienDescent"><code class="docutils literal notranslate"><span class="pre">GradienDescent</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.gradient_descent.GradienDescent.weights"><code class="docutils literal notranslate"><span class="pre">GradienDescent.weights</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.gradient_descent.GradienDescent.fit"><code class="docutils literal notranslate"><span class="pre">GradienDescent.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.gradient_descent.GradienDescent.get_gradient"><code class="docutils literal notranslate"><span class="pre">GradienDescent.get_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.gradient_descent.GradienDescent.predict"><code class="docutils literal notranslate"><span class="pre">GradienDescent.predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.models.html#module-Linear_Regression.models.linear_regression">Linear_Regression.models.linear_regression module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.linear_regression.LinearRegression"><code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.linear_regression.LinearRegression.weights"><code class="docutils literal notranslate"><span class="pre">LinearRegression.weights</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.linear_regression.LinearRegression.coef_"><code class="docutils literal notranslate"><span class="pre">LinearRegression.coef_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.linear_regression.LinearRegression.intercept_"><code class="docutils literal notranslate"><span class="pre">LinearRegression.intercept_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.linear_regression.LinearRegression.fit"><code class="docutils literal notranslate"><span class="pre">LinearRegression.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.linear_regression.LinearRegression.predict"><code class="docutils literal notranslate"><span class="pre">LinearRegression.predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.models.html#module-Linear_Regression.models.regression_metrics">Linear_Regression.models.regression_metrics module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.regression_metrics.RegressionMetrics"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.regression_metrics.RegressionMetrics.MSE"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.MSE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.regression_metrics.RegressionMetrics.RMSE"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.RMSE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.regression_metrics.RegressionMetrics.MAE"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.MAE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.regression_metrics.RegressionMetrics.R2"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.R2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.regression_metrics.RegressionMetrics.print_metrics"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.print_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.regression_metrics.RegressionMetrics.metrics_dataframe"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.metrics_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#id0"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.MAE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#id1"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.MSE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#id2"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.R2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#id3"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.metrics_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#id4"><code class="docutils literal notranslate"><span class="pre">RegressionMetrics.print_metrics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.models.html#module-Linear_Regression.models.standard_scaler">Linear_Regression.models.standard_scaler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.standard_scaler.StandardScaler"><code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.standard_scaler.StandardScaler.mean_"><code class="docutils literal notranslate"><span class="pre">StandardScaler.mean_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.standard_scaler.StandardScaler.std_"><code class="docutils literal notranslate"><span class="pre">StandardScaler.std_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.standard_scaler.StandardScaler.z_score_"><code class="docutils literal notranslate"><span class="pre">StandardScaler.z_score_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.standard_scaler.StandardScaler.fit"><code class="docutils literal notranslate"><span class="pre">StandardScaler.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.standard_scaler.StandardScaler.fit_transform"><code class="docutils literal notranslate"><span class="pre">StandardScaler.fit_transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Linear_Regression.models.html#Linear_Regression.models.standard_scaler.StandardScaler.transform"><code class="docutils literal notranslate"><span class="pre">StandardScaler.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.models.html#module-Linear_Regression.models">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-Linear_Regression">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Linear_Regression" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Machine_Learning_From_Scratch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Linear_Regression.models.html" class="btn btn-neutral float-right" title="Linear_Regression.models package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

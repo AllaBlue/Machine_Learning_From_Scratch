@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regularizations.models.elastic_net &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Machine_Learning_From_Scratch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Regularizations.models.elastic_net</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Regularizations.models.elastic_net</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<div class="viewcode-block" id="ElasticNetCoordinate">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetCoordinate">[docs]</a>
+<span class="k">class</span> <span class="nc">ElasticNetCoordinate</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Elastic Net Coordinate Descent algorithm for regression.</span>
+
+<span class="sd">    The objective function is given by:</span>
+<span class="sd">        L = (1/2n) * sum((y - (XW + b))^2) + alpha * l1_ratio * |W| + 1/2 * alpha * (1-l1_ratio) |W|^2</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        alpha (float): Regularization strength.</span>
+<span class="sd">        l1_ratio (float): Ratio of L1 to L2 regularization.</span>
+<span class="sd">        sc (StandardScaler): Scaler for standardizing features.</span>
+<span class="sd">        coef_ (numpy.ndarray): Coefficients of the fitted model.</span>
+<span class="sd">        intercept_ (float): Intercept (bias) term of the fitted model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">l1_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ElasticNetCoordinate class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            alpha (float): Regularization strength.</span>
+<span class="sd">            l1_ratio (float): Ratio of L1 to L2 regularization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l1_ratio</span> <span class="o">=</span> <span class="n">l1_ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ElasticNetCoordinate.fit">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetCoordinate.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ElasticNetCoordinate&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the Elastic Net model using coordinate descent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features of shape (n_samples, n_features).</span>
+<span class="sd">            y_train (np.ndarray): Training data target values of shape (n_samples,).</span>
+<span class="sd">            iterations (int): Number of iterations for the coordinate descent algorithm.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ElasticNetCoordinate: Returns self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+        
+        <span class="c1"># Standardize features</span>
+        <span class="n">X_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+        <span class="c1"># Initialize coefficients and intercept</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Coordinate descent iterations</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_current_weight</span><span class="p">(</span><span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_bias</span><span class="p">(</span><span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    
+
+<div class="viewcode-block" id="ElasticNetCoordinate.predict">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetCoordinate.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_test</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts using the fitted Elastic Net model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_test (np.ndarray): Test data features of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted target values of shape (n_samples,).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">y_pred</span></div>
+
+
+
+<div class="viewcode-block" id="ElasticNetCoordinate.update_current_weight">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetCoordinate.update_current_weight">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_current_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the weights using the coordinate descent algorithm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features.</span>
+<span class="sd">            y_train (np.ndarray): Training data target values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">):</span>
+            
+            <span class="c1"># Calculate residual</span>
+            <span class="n">residual</span> <span class="o">=</span> <span class="n">y_train</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+            <span class="c1"># Exclude the contribution of the current weight</span>
+            <span class="n">current_residual</span> <span class="o">=</span> <span class="n">residual</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="n">feature</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
+
+            <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="n">feature</span><span class="p">],</span> <span class="n">current_residual</span><span class="p">)</span>
+            <span class="n">pho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1_ratio</span>
+
+            <span class="n">scalar</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(((</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X_train</span><span class="p">[:,</span> <span class="n">feature</span><span class="p">]))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1_ratio</span><span class="p">))</span>
+
+            <span class="c1"># Update current weight using soft-thresholding</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">scalar</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">soft_thresholding_operator</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">pho</span><span class="o">=</span><span class="n">pho</span><span class="p">)</span></div>
+
+    
+
+<div class="viewcode-block" id="ElasticNetCoordinate.update_bias">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetCoordinate.update_bias">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the bias (intercept) term of the model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features.</span>
+<span class="sd">            y_train (np.ndarray): Training data target values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_train</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span></div>
+
+    
+
+<div class="viewcode-block" id="ElasticNetCoordinate.soft_thresholding_operator">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetCoordinate.soft_thresholding_operator">[docs]</a>
+    <span class="k">def</span> <span class="nf">soft_thresholding_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pho</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Soft-thresholding operator for L1 regularization.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            z (float): Input value.</span>
+<span class="sd">            pho (float): Threshold parameter.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Thresholded value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="n">pho</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z</span> <span class="o">-</span> <span class="n">pho</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">pho</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">pho</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z</span> <span class="o">+</span> <span class="n">pho</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ElasticNetGradient">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetGradient">[docs]</a>
+<span class="k">class</span> <span class="nc">ElasticNetGradient</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Elastic Net Gradient Descent algorithm for regression.</span>
+
+<span class="sd">    The objective function is given by:</span>
+<span class="sd">        L = (1/2n) * sum((y - (XW + b))^2) + alpha * l1_ratio * |W| + 1/2 * alpha * (1-l1_ratio) |W|^2</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        alpha (float): Regularization strength.</span>
+<span class="sd">        l1_ratio (float): Ratio of L1 to L2 regularization.</span>
+<span class="sd">        learning_rate (float): Learning rate for gradient descent.</span>
+<span class="sd">        sc (StandardScaler): Scaler for standardizing features.</span>
+<span class="sd">        coef_ (numpy.ndarray): Coefficients of the fitted model.</span>
+<span class="sd">        intercept_ (float): Intercept (bias) term of the fitted model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">l1_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ElasticNetGradient class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            alpha (float): Regularization strength.</span>
+<span class="sd">            l1_ratio (float): Ratio of L1 to L2 regularization.</span>
+<span class="sd">            learning_rate (float): Learning rate for gradient descent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l1_ratio</span> <span class="o">=</span> <span class="n">l1_ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+
+
+<div class="viewcode-block" id="ElasticNetGradient.fit">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetGradient.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ElasticNetGradient&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the Elastic Net model using gradient descent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features of shape (n_samples, n_features).</span>
+<span class="sd">            y_train (np.ndarray): Training data target values of shape (n_samples,).</span>
+<span class="sd">            iterations (int): Number of iterations for gradient descent.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ElasticNetGradient: Returns self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Initialize coefficients and intercept</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Gradient descent iterations</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+            <span class="n">gradient_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gradient_weights</span><span class="p">(</span><span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
+            <span class="n">gradient_bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gradient_bias</span><span class="p">(</span><span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
+
+            <span class="c1"># Update weights and bias</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient_weights</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient_bias</span>
+        
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    
+
+<div class="viewcode-block" id="ElasticNetGradient.predict">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetGradient.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_test</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts using the fitted Elastic Net model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_test (np.ndarray): Test data features of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted target values of shape (n_samples,).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">y_pred</span></div>
+
+
+
+<div class="viewcode-block" id="ElasticNetGradient.get_gradient_weights">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetGradient.get_gradient_weights">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_gradient_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the gradient of the weights for gradient descent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features.</span>
+<span class="sd">            y_train (np.ndarray): Training data target values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Gradient of the weights.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">y_train</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+        <span class="n">gradient_weights</span> <span class="o">=</span> <span class="p">(((</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">residual</span><span class="p">))</span>
+                             <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1_ratio</span> 
+                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1_ratio</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">gradient_weights</span></div>
+
+    
+
+<div class="viewcode-block" id="ElasticNetGradient.get_gradient_bias">
+<a class="viewcode-back" href="../../../Regularizations.models.html#Regularizations.models.elastic_net.ElasticNetGradient.get_gradient_bias">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_gradient_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the gradient of the bias (intercept) for gradient descent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train (np.ndarray): Training data features.</span>
+<span class="sd">            y_train (np.ndarray): Training data target values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Gradient of the bias.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">y_train</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+        <span class="n">gradient_bias</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">gradient_bias</span></div>
+</div>
+
+    
+
+<span class="c1"># coordinate = ElasticNetCoordinate(alpha=0)</span>
+<span class="c1"># gradient = ElasticNetGradient(alpha=0, learning_rate=0.1)</span>
+<span class="c1"># en_sklearn = ElasticNet(alpha=0)</span>
+
+<span class="c1"># X = np.array([1,2,3,4,2,4,6,8,1,5,1,5]).reshape(3,4)</span>
+<span class="c1"># y = np.array([2,5,6])</span>
+
+<span class="c1"># sc = StandardScaler()</span>
+<span class="c1"># X = sc.fit_transform(X)</span>
+
+<span class="c1"># coordinate.fit(X,y,1000)</span>
+<span class="c1"># gradient.fit(X,y,10000)</span>
+<span class="c1"># en_sklearn.fit(X,y)</span>
+
+<span class="c1"># print(&quot;coordinate.coef_&quot;)</span>
+<span class="c1"># print(coordinate.coef_)</span>
+
+<span class="c1"># print(&quot;en_sklearn.coef_&quot;)</span>
+<span class="c1"># print(en_sklearn.coef_)</span>
+
+<span class="c1"># print(&quot;gradient.coef_&quot;)</span>
+<span class="c1"># print(gradient.coef_)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

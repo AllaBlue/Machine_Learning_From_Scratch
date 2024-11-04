@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K_Nearest_Neighbors.models.k_nearest_neighbors &mdash; Machine Learning From Scratch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Machine Learning From Scratch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Machine_Learning_From_Scratch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Machine Learning From Scratch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">K_Nearest_Neighbors.models.k_nearest_neighbors</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for K_Nearest_Neighbors.models.k_nearest_neighbors</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># from sklearn.neighbors import KNeighborsClassifier</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="KNearestNeighbors">
+<a class="viewcode-back" href="../../../K_Nearest_Neighbors.models.html#K_Nearest_Neighbors.models.k_nearest_neighbors.KNearestNeighbors">[docs]</a>
+<span class="k">class</span> <span class="nc">KNearestNeighbors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    K-Nearest Neighbors (KNN) classifier implemented from scratch.</span>
+
+<span class="sd">    This class provides methods to train a KNN model, predict labels, </span>
+<span class="sd">    and predict label probabilities for a given dataset. It supports </span>
+<span class="sd">    both categorical and numerical data as target labels.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        n_neighbors (int): The number of neighbors to use for classification.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the KNN classifier with a specified number of neighbors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n_neighbors (int): Number of neighbors to use for classification. Default is 5.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">n_neighbors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predict_flag</span> <span class="o">=</span> <span class="kc">False</span>
+    
+<div class="viewcode-block" id="KNearestNeighbors.fit">
+<a class="viewcode-back" href="../../../K_Nearest_Neighbors.models.html#K_Nearest_Neighbors.models.k_nearest_neighbors.KNearestNeighbors.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the KNN model to the training data.</span>
+
+<span class="sd">        Stores the training data and encodes the target labels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Training data features.</span>
+<span class="sd">            y (np.ndarray): Training data labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encode_y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="KNearestNeighbors.predict">
+<a class="viewcode-back" href="../../../K_Nearest_Neighbors.models.html#K_Nearest_Neighbors.models.k_nearest_neighbors.KNearestNeighbors.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts the labels for the input data based on the nearest neighbors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Input data to classify.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted labels for each input sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_pred_proba</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_samples</span>
+        
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="n">label</span><span class="p">,</span> <span class="n">probabilities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_sample</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_pred</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_pred_proba</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">probabilities</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_pred_proba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_pred_proba</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">predict_flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_y</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_pred</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="KNearestNeighbors.predict_proba">
+<a class="viewcode-back" href="../../../K_Nearest_Neighbors.models.html#K_Nearest_Neighbors.models.k_nearest_neighbors.KNearestNeighbors.predict_proba">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts the probability distributions over classes for input samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray, optional): Input data to classify. If omitted, </span>
+<span class="sd">            the method assumes that `predict` has already been called.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Probability distribution for each input sample across all classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_flag</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_pred_proba</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_pred_proba</span></div>
+
+    
+<div class="viewcode-block" id="KNearestNeighbors.predict_sample">
+<a class="viewcode-back" href="../../../K_Nearest_Neighbors.models.html#K_Nearest_Neighbors.models.k_nearest_neighbors.KNearestNeighbors.predict_sample">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts the label and probability distribution for a single input sample.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (np.ndarray): Single input sample.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Predicted label and probability distribution over classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span> <span class="o">-</span> <span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">nearest_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_neighbors</span><span class="p">]</span>
+        <span class="n">top_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">[</span><span class="n">nearest_indices</span><span class="p">]</span>
+
+        <span class="n">label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">))</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">top_k</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">label</span><span class="p">,</span> <span class="n">probabilities</span></div>
+
+    
+    <span class="k">def</span> <span class="nf">__encode_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encodes categorical labels to integer values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y (np.ndarray): Array of labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Encoded integer values of labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+        <span class="n">encoded_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span> <span class="o">==</span> <span class="n">element</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">y</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">encoded_y</span>
+
+    <span class="k">def</span> <span class="nf">__decode_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decodes integer values back to original categorical labels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y (np.ndarray): Array of encoded integer labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Decoded original labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">decoded_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">y</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">decoded_y</span></div>
+
+
+
+
+<span class="c1">###TEST###</span>
+<span class="c1"># knn = KNearestNeighbors(n_neighbors=3)</span>
+<span class="c1"># X = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,5,6,3,7,2,8,1,1,1,8]).reshape(8,3)</span>
+<span class="c1"># y = np.array([&quot;one&quot;, &quot;one&quot;, &quot;one&quot;, &quot;two&quot;, &quot;two&quot;, &quot;one&quot;, &quot;one&quot;, &quot;one&quot;])</span>
+<span class="c1"># test = np.array([2,2,2, 14,15,16, 7,3,8, 11,10,11]).reshape(4,3)</span>
+<span class="c1"># knn.fit(X, y)</span>
+<span class="c1"># prediction = knn.predict(test)</span>
+<span class="c1"># probabilities = knn.predict_proba(test)</span>
+<span class="c1"># print(prediction)</span>
+<span class="c1"># print(probabilities)</span>
+
+
+<span class="c1">#Sklearn</span>
+<span class="c1"># knn_sklearn = KNeighborsClassifier(n_neighbors=3)</span>
+<span class="c1"># knn_sklearn.fit(X,y)</span>
+<span class="c1"># preds = knn_sklearn.predict(test)</span>
+<span class="c1"># print(preds)</span>
+
+
+
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alla-Anastasiia Gnatkiv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
