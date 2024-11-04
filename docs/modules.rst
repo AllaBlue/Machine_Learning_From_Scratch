@@ -8,4 +8,5 @@ Machine_Learning_From_Scratch
    Logistic_Regression
    Polynomial_Regression
    Regularizations
+   K_Nearest_Neighbors
    utils
